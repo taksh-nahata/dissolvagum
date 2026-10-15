@@ -1,0 +1,157 @@
+"use client";
+
+import { useEffect, useRef, type MutableRefObject } from "react";
+
+/* A sidewalk covered in old gum. As `progressRef` (0 to 1) rises, the gum
+   dissolves away from right to left, leaving clean concrete. */
+
+const GUM = ["#5d5a55", "#6b6862", "#4e4c48", "#77716b", "#8a707a", "#7d887b"];
+
+const clamp01 = (x: number) => Math.min(1, Math.max(0, x));
+const smooth = (a: number, b: number, x: number) => {
+  const t = clamp01((x - a) / (b - a));
+  return t * t * (3 - 2 * t);
+};
+
+type Spot = { x: number; y: number; r: number; color: string; t: number; pts: [number, number][] };
+
+export default function Pavement({
+  progressRef,
+  still = false,
+}: {
+  progressRef: MutableRefObject<number>;
+  still?: boolean;
+}) {
+  const ref = useRef<HTMLCanvasElement>(null);
+
+  useEffect(() => {
+    const canvas = ref.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    let w = 0, h = 0, dpr = 1;
+    let concrete: HTMLCanvasElement | null = null;
+    let spots: Spot[] = [];
+    let last = -1;
+
+    const build = () => {
+      dpr = Math.min(window.devicePixelRatio || 1, 2);
+      w = canvas.clientWidth;
+      h = canvas.clientHeight;
+      canvas.width = Math.round(w * dpr);
+      canvas.height = Math.round(h * dpr);
+
+      // Concrete: warm grey, soft blotches, fine grit and slab joints.
+      const c = document.createElement("canvas");
+      c.width = canvas.width;
+      c.height = canvas.height;
+      const g = c.getContext("2d")!;
+      g.scale(dpr, dpr);
+      g.fillStyle = "#c9c6bf";
+      g.fillRect(0, 0, w, h);
+      for (let i = 0; i < 46; i++) {
+        const x = Math.random() * w, y = Math.random() * h, r = 60 + Math.random() * 200;
+        const grad = g.createRadialGradient(x, y, 0, x, y, r);
+        const light = Math.random() > 0.5;
+        grad.addColorStop(0, light ? "rgba(255,255,250,0.10)" : "rgba(70,66,60,0.07)");
+        grad.addColorStop(1, "rgba(0,0,0,0)");
+        g.fillStyle = grad;
+        g.fillRect(x - r, y - r, r * 2, r * 2);
+      }
+      const grit = Math.floor((w * h) / 28);
+      for (let i = 0; i < grit; i++) {
+        const dark = Math.random() > 0.45;
+        g.fillStyle = dark ? `rgba(60,56,50,${0.05 + Math.random() * 0.16})` : `rgba(255,255,250,${0.08 + Math.random() * 0.2})`;
+        const s = Math.random() > 0.9 ? 1.6 : 0.9;
+        g.fillRect(Math.random() * w, Math.random() * h, s, s);
+      }
+      // Slab joints, about every 520px, slightly off true.
+      const joint = (x1: number, y1: number, x2: number, y2: number) => {
+        g.strokeStyle = "rgba(50,47,42,0.38)"; g.lineWidth = 2.2;
+        g.beginPath(); g.moveTo(x1, y1); g.lineTo(x2, y2); g.stroke();
+        g.strokeStyle = "rgba(255,255,250,0.35)"; g.lineWidth = 1;
+        g.beginPath(); g.moveTo(x1 + 2, y1 + 2); g.lineTo(x2 + 2, y2 + 2); g.stroke();
+      };
+      const gx = Math.max(380, w * 0.42);
+      for (let x = gx * 0.7; x < w; x += gx) joint(x, 0, x + 6, h);
+      for (let y = h * 0.74; y < h; y += 520) joint(0, y, w, y + 4);
+      concrete = c;
+
+      // Gum: flat, irregular blobs, a bit denser on the right and in trails.
+      const n = Math.floor((w * h) / 2600);
+      spots = [];
+      for (let i = 0; i < n; i++) {
+        let x = Math.random() * w, y = Math.random() * h;
+        if (spots.length && Math.random() < 0.22) {
+          const p = spots[Math.floor(Math.random() * spots.length)];
+          x = p.x + (Math.random() - 0.5) * 90; y = p.y + (Math.random() - 0.5) * 60;
+        }
+        if (x < w * 0.5 && Math.random() < 0.55) continue; // keep the headline readable
+        const r = 3 + Math.pow(Math.random(), 2) * 11;
+        const k = 7 + Math.floor(Math.random() * 3);
+        const pts: [number, number][] = Array.from({ length: k }, (_, j) => {
+          const a = (j / k) * Math.PI * 2, rr = r * (0.7 + Math.random() * 0.5);
+          return [Math.cos(a) * rr, Math.sin(a) * rr * 0.85];
+        });
+        const sweep = ((w - x) / w) * 0.8 + (y / h) * 0.2;
+        spots.push({ x, y, r, pts, color: GUM[Math.floor(Math.random() * GUM.length)], t: sweep * 0.7 + Math.random() * 0.3 });
+      }
+      last = -1;
+    };
+
+    const draw = () => {
+      const p = still ? 0 : progressRef.current;
+      if (p === last || !concrete) return;
+      last = p;
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
+      ctx.drawImage(concrete, 0, 0);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      const q = smooth(0.36, 0.9, p) * 1.05;
+      for (const s of spots) {
+        const c = clamp01((q - s.t * 0.85) / 0.14);
+        if (c >= 1) continue;
+        const a = 1 - c, k = 1 - 0.35 * c;
+        ctx.save();
+        ctx.translate(s.x, s.y);
+        ctx.scale(k, k);
+        // stain around the gum
+        ctx.globalAlpha = 0.1 * a;
+        ctx.fillStyle = "#3d3a35";
+        ctx.beginPath(); ctx.ellipse(0, 0, s.r * 1.9, s.r * 1.6, 0, 0, Math.PI * 2); ctx.fill();
+        // the gum itself
+        ctx.globalAlpha = 0.92 * a;
+        ctx.fillStyle = s.color;
+        ctx.beginPath();
+        s.pts.forEach(([px, py], i) => (i ? ctx.lineTo(px, py) : ctx.moveTo(px, py)));
+        ctx.closePath(); ctx.fill();
+        // trodden-flat highlight
+        ctx.globalAlpha = 0.28 * a;
+        ctx.fillStyle = "#e9e6df";
+        ctx.beginPath(); ctx.ellipse(-s.r * 0.25, -s.r * 0.3, s.r * 0.35, s.r * 0.2, -0.5, 0, Math.PI * 2); ctx.fill();
+        ctx.restore();
+        // dissolve ripple
+        if (c > 0) {
+          ctx.globalAlpha = (1 - c) * 0.9;
+          ctx.strokeStyle = "#2f7a4f";
+          ctx.lineWidth = 1.4;
+          ctx.beginPath(); ctx.arc(s.x, s.y, s.r * (1 + c * 2.2), 0, Math.PI * 2); ctx.stroke();
+        }
+        ctx.globalAlpha = 1;
+      }
+    };
+
+    build();
+    draw();
+    const ro = new ResizeObserver(() => { build(); draw(); });
+    ro.observe(canvas);
+    let raf = 0;
+    if (!still) {
+      const loop = () => { draw(); raf = requestAnimationFrame(loop); };
+      raf = requestAnimationFrame(loop);
+    }
+    return () => { cancelAnimationFrame(raf); ro.disconnect(); };
+  }, [progressRef, still]);
+
+  return <canvas ref={ref} className="absolute inset-0 h-full w-full" aria-hidden />;
+}

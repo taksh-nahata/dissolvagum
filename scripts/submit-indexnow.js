@@ -12,15 +12,12 @@ const SUBMITTED_URLS_PATH = path.join(__dirname, 'submitted-urls.json');
 const urls = [
   `${BASE_URL}/`,
   `${BASE_URL}/about`,
-  `${BASE_URL}/shop`,
   `${BASE_URL}/faq`,
-  `${BASE_URL}/cart`,
   `${BASE_URL}/contact`,
   `${BASE_URL}/how-it-works`,
   `${BASE_URL}/legal/terms`,
   `${BASE_URL}/legal/privacy`,
   `${BASE_URL}/legal/accessibility`,
-  `${BASE_URL}/legal/shipping`,
   `${BASE_URL}/business-interest`,
   `${BASE_URL}/support-interest`,
   `${BASE_URL}/sitemap.xml`

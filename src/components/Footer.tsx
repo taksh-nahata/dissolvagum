@@ -3,45 +3,44 @@
 import Link from 'next/link';
 import { Instagram } from 'lucide-react';
 
+const linkClass = "transition-colors hover:text-white";
+
 const Footer = () => {
   return (
-    <footer className="bg-gray-800 dark:bg-gray-950 text-gray-300 dark:text-gray-400 py-12 md:py-16 w-full">
-      <div className="container mx-auto px-6">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+    <footer className="w-full bg-deep py-12 text-deep-foreground md:py-16">
+      <div className="mx-auto max-w-7xl px-4 md:px-8">
+        <div className="mb-10 grid grid-cols-1 gap-10 md:grid-cols-3">
           <div>
-            <h3 className="text-xl font-semibold text-white mb-4">DissolvaGum</h3>
-            <p className="text-sm mb-4">
-              Chew Some Gum, Skip the Mess. Eco-friendly, long-lasting, and no sticky waste.
+            <p className="mb-4 text-2xl uppercase tracking-[0.12em] text-white">DissolvaGum</p>
+            <p className="max-w-[34ch]">
+              Chew some gum. Skip the mess. A gum designed to be safe to swallow, in development in Folsom, California.
             </p>
           </div>
           <div>
-            <h4 className="text-lg font-semibold text-white mb-4">Quick Links</h4>
-            <ul className="space-y-2 text-sm">
-              <li><Link href="/shop" className="hover:text-teal-400 transition-colors">Shop</Link></li>
-              <li><Link href="/about" className="hover:text-teal-400 transition-colors">About Us</Link></li>
-              <li><Link href="/faq" className="hover:text-teal-400 transition-colors">FAQ</Link></li>
+            <h4 className="ds-label mb-4 text-white">Explore</h4>
+            <ul className="space-y-2">
+              <li><Link href="/how-it-works" className={linkClass}>How it works</Link></li>
+              <li><Link href="/about" className={linkClass}>About us</Link></li>
+              <li><Link href="/faq" className={linkClass}>FAQ</Link></li>
             </ul>
           </div>
           <div>
-            <h4 className="text-lg font-semibold text-white mb-4">Legal & Support</h4>
-            <ul className="space-y-2 text-sm">
-              <li><Link href="/legal/terms" className="hover:text-teal-400 transition-colors">Terms & Conditions</Link></li>
-              <li><Link href="/legal/privacy" className="hover:text-teal-400 transition-colors">Privacy Policy</Link></li>
-              <li><Link href="/legal/shipping" className="hover:text-teal-400 transition-colors">Shipping & Returns</Link></li>
-              <li><Link href="/legal/accessibility" className="hover:text-teal-400 transition-colors">Accessibility Statement</Link></li>
-              <li><Link href="/contact" className="hover:text-teal-400 transition-colors">Contact Us</Link></li>
-              <li><Link href="/business-interest" className="hover:text-teal-400 transition-colors">Business Interest</Link></li>
-              <li><Link href="/support-interest" className="hover:text-teal-400 transition-colors">Support Interest</Link></li>
+            <h4 className="ds-label mb-4 text-white">Legal and support</h4>
+            <ul className="space-y-2">
+              <li><Link href="/legal/terms" className={linkClass}>Terms &amp; Conditions</Link></li>
+              <li><Link href="/legal/privacy" className={linkClass}>Privacy Policy</Link></li>
+              <li><Link href="/legal/accessibility" className={linkClass}>Accessibility Statement</Link></li>
+              <li><Link href="/contact" className={linkClass}>Contact Us</Link></li>
+              <li><Link href="/business-interest" className={linkClass}>Business Interest</Link></li>
+              <li><Link href="/support-interest" className={linkClass}>Support Interest</Link></li>
             </ul>
           </div>
         </div>
-        <div className="border-t border-gray-700 dark:border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center">
-          <p className="text-sm mb-4 md:mb-0">
-            &copy; {new Date().getFullYear()} DissolvaGum. All rights reserved.
-          </p>
-          <div className="flex space-x-4">
-            <a href="https://www.instagram.com/dissolvagum/" aria-label="Instagram" className="hover:text-teal-400 transition-colors"><Instagram size={20}/></a>
-          </div>
+        <div className="flex flex-col items-center justify-between gap-4 border-t border-white/15 pt-8 md:flex-row">
+          <p className="text-sm">&copy; {new Date().getFullYear()} DissolvaGum. All rights reserved.</p>
+          <a href="https://www.instagram.com/dissolvagum/" aria-label="Instagram" className={linkClass}>
+            <Instagram size={20} />
+          </a>
         </div>
       </div>
     </footer>
@@ -49,4 +48,3 @@ const Footer = () => {
 };
 
 export default Footer;
-

@@ -32,32 +32,36 @@ export default function SurveyPopup() {
 
   if (!show) return null;
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-      <div className="bg-white dark:bg-gray-900 rounded-lg shadow-lg p-8 max-w-md w-full text-center">
-        <h2 className="text-xl font-bold mb-4">Would you be willing to try DissolvaGum?</h2>
-        <p className="text-lg font-semibold mb-2">We'd love your feedback!</p>
-        <p className="mb-4">If you can spare just 40 seconds, please help us by sharing your thoughts on our DissolvaGum concept. Your feedback will help shape the future of eco-friendly gum. Thank you!</p>
-        <a
-          href="https://forms.gle/XshZmHL6ix4sesuE9"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-block bg-teal-600 text-white px-4 py-2 rounded hover:bg-teal-700 transition mb-2"
-        >
-          Take the Survey
-        </a>
-        <div className="mb-2">or</div>
-        <a
-          href="/support-interest"
-          className="inline-block underline text-teal-700 hover:text-teal-900"
-        >
-          Visit our Supporter Form
-        </a>
-        <button
-          className="block mt-6 mx-auto text-gray-500 hover:text-gray-800 dark:hover:text-gray-200"
-          onClick={handleClose}
-        >
-          Close
-        </button>
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-deep/60 px-4">
+      <div
+        role="dialog"
+        aria-labelledby="survey-title"
+        className="w-full max-w-md rounded-[32px] bg-card p-8 text-center shadow-soft"
+      >
+        <h2 id="survey-title" className="mb-3 text-2xl">Would you be willing to try DissolvaGum?</h2>
+        <p className="mb-6 text-ink-2">
+          If you can spare 40 seconds, please share your thoughts on our DissolvaGum concept. Your feedback helps shape
+          what we build. Thank you!
+        </p>
+        <div className="flex flex-col items-center gap-3">
+          <a
+            href="https://forms.gle/XshZmHL6ix4sesuE9"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="ds-label inline-flex h-11 items-center rounded-full bg-primary px-6 text-primary-foreground transition-colors hover:bg-foreground hover:text-background"
+          >
+            Take the survey
+          </a>
+          <a href="/support-interest" className="text-primary underline underline-offset-4 hover:no-underline">
+            Visit our supporter form
+          </a>
+          <button
+            className="mt-2 text-muted-foreground transition-colors hover:text-foreground"
+            onClick={handleClose}
+          >
+            Close
+          </button>
+        </div>
       </div>
     </div>
   );

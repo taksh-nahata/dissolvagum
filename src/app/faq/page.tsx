@@ -8,27 +8,27 @@ import Footer from "@/components/Footer";
 const faqData = [
 	{
 		question: "What is DissolvaGum?",
-		answer: "DissolvaGum is a new type of chewing gum that is designed to dissolve completely after a certain period, leaving no waste behind. It offers the same great taste and texture as traditional gum but with an eco-friendly advantage.",
+		answer: "DissolvaGum is a startup founded by four high school students in Folsom, California. We are designing a chewing gum that is safe to swallow once you finish chewing, so it never becomes litter.",
 	},
 	{
-		question: "How long does it take for DissolvaGum to dissolve?",
-		answer: "The dissolving time can vary slightly, but it's generally designed to start breaking down after about 2 hours and fully dissolve shortly thereafter. We are working on different formulations for varied dissolving times.",
+		question: "Can I buy it?",
+		answer: "No. DissolvaGum is a concept in early research and development, and nothing is for sale. This site exists to show the idea and to hear from people who are interested.",
 	},
 	{
-		question: "What flavors does DissolvaGum come in?",
-		answer: "Initially, we are launching with Spearmint, Watermelon, and Cherry Blast flavors. We plan to introduce a wider range of flavors based on customer feedback and research.",
+		question: "Why not just throw gum away?",
+		answer: "A lot of it ends up on sidewalks instead. Conventional gum base is a plastic-like polymer that does not break down, and even chicle-based gums can take months to years.",
 	},
 	{
-		question: "Where can I buy DissolvaGum?",
-		answer: "DissolvaGum will be available for purchase directly from our website. We are also working on partnerships with retail stores, and we'll update our website with a store locator once available.",
+		question: "What does \"designed to be safe to swallow\" mean?",
+		answer: "The spent gum is meant to be digestible and biodegradable. These are design goals we are working toward, not proven results.",
 	},
 	{
-		question: "Is the packaging eco-friendly as well?",
-		answer: "Absolutely! We are committed to sustainability. Our packaging is made from recycled and biodegradable materials to minimize environmental impact.",
+		question: "How long would it take to break down?",
+		answer: "Our target is about 30 days. We have not reached it yet.",
 	},
 	{
-		question: "How does DissolvaGum compare to regular chewing gum?",
-		answer: "DissolvaGum offers a similar chewing experience in terms of flavor and texture but with the significant benefit of being fully dissolvable and biodegradable, addressing the issue of gum litter.",
+		question: "How can I help?",
+		answer: "Fill in the support interest form, or the business interest form if you represent a company. You can also reach the team through the contact page.",
 	},
 ];
 

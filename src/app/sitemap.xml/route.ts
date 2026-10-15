@@ -6,14 +6,11 @@ export async function GET() {
     '',
     '/about',
     '/faq',
-    '/shop',
-    '/cart',
     '/contact',
     '/how-it-works',
     '/legal/terms',
     '/legal/privacy',
     '/legal/accessibility',
-    '/legal/shipping',
     '/business-interest',
     '/support-interest'
   ];

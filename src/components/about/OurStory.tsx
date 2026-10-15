@@ -35,7 +35,7 @@ const OurStory = () => {
           "It all started at school," recalls Taksh Nahata. "Seeing gum stuck everywhere, including on my shoe, I realized this was a problem that needed solving. That moment sparked the idea for DissolvaGum."
           </p>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed mt-3">
-          This initial frustration led to years of research and collaboration, culminating in the creation of a gum that dissolves and leaves no mess behind.
+          That frustration became the idea for DissolvaGum: a gum designed to be safe to swallow, so it leaves no mess behind. It is still in development.
           </p>
         </div>
         </motion.div>

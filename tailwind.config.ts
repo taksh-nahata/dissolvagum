@@ -9,7 +9,20 @@ export default {
   ],
   theme: {
   	extend: {
+  		fontFamily: {
+  			sans: ['"Glacial Indifference"', 'system-ui', 'sans-serif']
+  		},
+  		boxShadow: {
+  			soft: 'var(--shadow-soft)'
+  		},
   		colors: {
+  			mint: 'hsl(var(--mint))',
+  			deep: {
+  				DEFAULT: 'hsl(var(--deep))',
+  				foreground: 'hsl(var(--on-deep))'
+  			},
+  			'on-accent': 'hsl(var(--on-accent))',
+  			'ink-2': 'hsl(var(--ink-2))',
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',
   			sidebar: {

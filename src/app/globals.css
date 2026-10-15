@@ -5,101 +5,117 @@
 @font-face {
   font-family: "Glacial Indifference";
   src: url("/fonts/GlacialIndifference-Regular.otf") format("opentype");
-  font-weight: normal;
+  font-weight: 400;
   font-style: normal;
+  font-display: swap;
 }
 
 @font-face {
   font-family: "Glacial Indifference";
   src: url("/fonts/GlacialIndifference-Bold.otf") format("opentype");
-  font-weight: bold;
+  font-weight: 700;
   font-style: normal;
+  font-display: swap;
 }
 
-html, body, * {
-  font-family: "Glacial Indifference", sans-serif !important;
+@font-face {
+  font-family: "Glacial Indifference";
+  src: url("/fonts/GlacialIndifference-Italic.otf") format("opentype");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
 }
 
 .font-glacial-indifference {
-  font-family: "Glacial Indifference", sans-serif;
+  font-family: "Glacial Indifference", system-ui, sans-serif;
 }
 
+/* DissolvaGum design system: Day and Night themes. Values are HSL triplets. */
 @layer base {
   :root {
-    /* Light Mode - Pastel Greens & Blues from DissolvaGum Packaging */
-    --radius: 0.5rem;
-    --sidebar-background: 165 30% 12%; /* Dark Green-Blue (like darkest part of mountain) */
-    --sidebar-foreground: 150 35% 75%; /* Lighter Desaturated Green (text color on pack) */
-    --sidebar-primary: 150 40% 60%;    /* Medium Desaturated Green (accent on pack) */
-    --sidebar-primary-foreground: 0 0% 100%; /* White */
-    --sidebar-accent: 150 50% 92%;     /* Light Pastel Green */
-    --sidebar-accent-foreground: 160 30% 30%; /* Darker Pastel Green-Blue */
-    --sidebar-border: 150 40% 88%;     /* Lighter Pastel Green */
-    --sidebar-ring: 170 70% 55%;       /* Brighter Pastel Blue-Green */
+    --radius: 1.125rem;
 
-    --background: 150 60% 97%;        /* Very Light Mint Green */
-    --foreground: 165 35% 25%;        /* Dark Muted Teal */
-    --card: 150 50% 100%;             /* White with a hint of Mint */
-    --card-foreground: 165 35% 25%;   /* Dark Muted Teal */
-    --popover: 150 50% 100%;          /* White with a hint of Mint */
-    --popover-foreground: 165 35% 25%;/* Dark Muted Teal */
-    --primary: 170 60% 60%;           /* Pastel Spearmint Blue-Green */
-    --primary-foreground: 0 0% 100%;  /* White */
-    --secondary: 155 55% 88%;         /* Light Pastel Green */
-    --secondary-foreground: 165 35% 25%;/* Dark Muted Teal */
-    --muted: 155 55% 92%;            /* Very Light Pastel Green */
-    --muted-foreground: 160 30% 50%;  /* Medium Muted Teal */
-    --accent: 170 60% 80%;            /* Light Pastel Spearmint */
-    --accent-foreground: 165 35% 25%; /* Dark Muted Teal */
-    --destructive: 0 70% 70%;         /* Pastel Red */
-    --destructive-foreground: 0 0% 100%; /* White */
-    --border: 150 40% 85%;            /* Light Pastel Green Border */
-    --input: 150 40% 90%;             /* Very Light Pastel Green Input */
-    --ring: 170 70% 55%;              /* Brighter Pastel Blue-Green Ring */
+    --background: 135 31% 95%;          /* ground */
+    --foreground: 153 36% 11%;          /* ink */
+    --card: 0 0% 100%;                  /* surface */
+    --card-foreground: 153 36% 11%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 153 36% 11%;
+    --primary: 144 45% 22%;             /* brand: forest green */
+    --primary-foreground: 142 54% 96%;  /* on-brand */
+    --secondary: 145 37% 86%;           /* mint-soft */
+    --secondary-foreground: 153 36% 11%;
+    --muted: 145 37% 86%;
+    --muted-foreground: 150 12% 39%;    /* ink-3 */
+    --accent: 145 37% 86%;
+    --accent-foreground: 153 36% 11%;
+    --destructive: 357 71% 41%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 141 26% 85%;              /* line */
+    --input: 141 26% 85%;
+    --ring: 144 45% 22%;
 
-    --chart-1: 170 60% 60%; /* Pastel Spearmint */
-    --chart-2: 150 50% 70%; /* Lighter Pastel Green */
-    --chart-3: 180 50% 55%; /* Pastel Teal */
-    --chart-4: 160 65% 75%; /* Brighter Pastel Mint */
-    --chart-5: 190 55% 65%; /* Pastel Powder Blue */
+    --ink-2: 149 18% 30%;
+    --mint: 146 31% 66%;                /* spearmint from the pack */
+    --deep: 198 34% 13%;                /* navy-green from the pack */
+    --on-deep: 147 39% 82%;
+    --on-accent: 153 36% 11%;
+    --shadow-soft: 0 16px 40px rgba(18, 38, 29, 0.1);
+
+    --sidebar-background: 0 0% 100%;
+    --sidebar-foreground: 153 36% 11%;
+    --sidebar-primary: 144 45% 22%;
+    --sidebar-primary-foreground: 142 54% 96%;
+    --sidebar-accent: 145 37% 86%;
+    --sidebar-accent-foreground: 153 36% 11%;
+    --sidebar-border: 141 26% 85%;
+    --sidebar-ring: 144 45% 22%;
+
+    --chart-1: 144 45% 22%;
+    --chart-2: 146 31% 66%;
+    --chart-3: 147 39% 82%;
+    --chart-4: 165 30% 40%;
+    --chart-5: 198 34% 13%;
   }
 
   .dark {
-    /* Dark Mode - Based on DissolvaGum Packaging */
-    --sidebar-background: 165 30% 12%; /* Dark Green-Blue (like darkest part of mountain) */
-    --sidebar-foreground: 150 35% 75%; /* Lighter Desaturated Green (text color on pack) */
-    --sidebar-primary: 150 40% 60%;    /* Medium Desaturated Green (accent on pack) */
-    --sidebar-primary-foreground: 165 30% 10%; /* Very Dark Green-Blue */
-    --sidebar-accent: 165 30% 18%;     /* Darker Green-Blue */
-    --sidebar-accent-foreground: 150 35% 75%; /* Lighter Desaturated Green */
-    --sidebar-border: 165 30% 15%;     /* Dark Green-Blue Border */
-    --sidebar-ring: 150 45% 55%;       /* Brighter Desaturated Green Ring */
+    --background: 165 30% 8%;
+    --foreground: 142 31% 93%;
+    --card: 198 34% 13%;
+    --card-foreground: 142 31% 93%;
+    --popover: 198 34% 13%;
+    --popover-foreground: 142 31% 93%;
+    --primary: 146 31% 66%;
+    --primary-foreground: 165 30% 8%;
+    --secondary: 159 33% 17%;
+    --secondary-foreground: 142 31% 93%;
+    --muted: 159 33% 17%;
+    --muted-foreground: 147 12% 61%;
+    --accent: 159 33% 17%;
+    --accent-foreground: 142 31% 93%;
+    --destructive: 5 74% 79%;
+    --destructive-foreground: 5 69% 14%;
+    --border: 163 24% 21%;
+    --input: 163 24% 21%;
+    --ring: 146 31% 66%;
 
-    --background: 160 38% 18%;        /* Main Dark Green from Packaging */
-    --foreground: 148 36% 78%;        /* Lighter, slightly desaturated Green (like "DISSOLVAGUM" text) */
-    --card: 160 38% 22%;              /* Slightly Lighter Dark Green for Cards */
-    --card-foreground: 148 36% 78%;   /* Lighter Desaturated Green */
-    --popover: 160 38% 15%;           /* Darker Green for Popovers */
-    --popover-foreground: 148 36% 78%;/* Lighter Desaturated Green */
-    --primary: 145 40% 65%;           /* Brighter Accent Green (like mountain lines) */
-    --primary-foreground: 160 38% 10%;/* Very Dark Green (for text on primary) */
-    --secondary: 165 30% 25%;         /* Darker Blue-Green (shadows/secondary elements) */
-    --secondary-foreground: 148 36% 78%;/* Lighter Desaturated Green */
-    --muted: 165 30% 22%;            /* Darker Blue-Green Muted */
-    --muted-foreground: 150 30% 60%;  /* Medium Desaturated Green Muted Text */
-    --accent: 145 40% 55%;            /* Accent Green (similar to mountain lines, slightly darker) */
-    --accent-foreground: 160 38% 8%;  /* Very Dark Green for text on accent */
-    --destructive: 0 50% 45%;         /* Darker Red for Destructive Actions */
-    --destructive-foreground: 148 36% 78%;/* Lighter Desaturated Green */
-    --border: 165 30% 28%;            /* Dark Blue-Green Border */
-    --input: 165 30% 22%;             /* Dark Blue-Green Input */
-    --ring: 145 45% 50%;              /* Brighter Accent Green Ring */
+    --ink-2: 140 16% 75%;
+    --shadow-soft: 0 16px 40px rgba(0, 0, 0, 0.45);
 
-    --chart-1: 145 40% 65%; /* Accent Green */
-    --chart-2: 150 35% 55%; /* Medium Desaturated Green */
-    --chart-3: 165 30% 45%; /* Darker Blue-Green */
-    --chart-4: 140 45% 70%; /* Brighter Accent Green */
-    --chart-5: 170 35% 50%; /* Muted Blue-Green */
+    --sidebar-background: 198 34% 13%;
+    --sidebar-foreground: 142 31% 93%;
+    --sidebar-primary: 146 31% 66%;
+    --sidebar-primary-foreground: 165 30% 8%;
+    --sidebar-accent: 159 33% 17%;
+    --sidebar-accent-foreground: 142 31% 93%;
+    --sidebar-border: 163 24% 21%;
+    --sidebar-ring: 146 31% 66%;
+
+    --chart-1: 146 31% 66%;
+    --chart-2: 159 33% 40%;
+    --chart-3: 147 39% 82%;
+    --chart-4: 165 30% 40%;
+    --chart-5: 147 39% 82%;
   }
 }
 
@@ -107,8 +123,36 @@ html, body, * {
   * {
     @apply border-border;
   }
+  html {
+    font-family: "Glacial Indifference", system-ui, sans-serif;
+  }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground antialiased;
+    font-size: 17px;
+    line-height: 1.6;
+    transition: background-color 300ms ease, color 300ms ease;
+  }
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-bold tracking-tight;
   }
 }
 
+@layer components {
+  /* Bold uppercase label: nav links, eyebrows, badges, buttons */
+  .ds-label {
+    @apply text-[13px] font-bold uppercase leading-none tracking-[0.14em];
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

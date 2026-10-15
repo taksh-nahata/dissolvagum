@@ -2,10 +2,11 @@
 
 import { useEffect, useRef, type MutableRefObject } from "react";
 
-/* A sidewalk covered in old gum. As `progressRef` (0 to 1) rises, the gum
-   dissolves away from right to left, leaving clean concrete. */
+/* A dark street covered in old gum. As `progressRef` (0 to 1) rises, the gum
+   dissolves away from right to left, leaving clean asphalt. */
 
-const GUM = ["#5d5a55", "#6b6862", "#4e4c48", "#77716b", "#8a707a", "#7d887b"];
+// gum trodden into asphalt dries pale grey; a few keep a hint of their flavor color
+const GUM = ["#8d8a84", "#9a968f", "#7c7974", "#a6a19a", "#9c868b", "#8c988d"];
 
 const clamp01 = (x: number) => Math.min(1, Math.max(0, x));
 const smooth = (a: number, b: number, x: number) => {
@@ -42,40 +43,32 @@ export default function Pavement({
       canvas.width = Math.round(w * dpr);
       canvas.height = Math.round(h * dpr);
 
-      // Concrete: warm grey, soft blotches, fine grit and slab joints.
+      // Asphalt: near-black, with pale stone aggregate and faint tar patches.
       const c = document.createElement("canvas");
       c.width = canvas.width;
       c.height = canvas.height;
       const g = c.getContext("2d")!;
       g.scale(dpr, dpr);
-      g.fillStyle = "#c9c6bf";
+      g.fillStyle = "#2a2a29";
       g.fillRect(0, 0, w, h);
-      for (let i = 0; i < 46; i++) {
-        const x = Math.random() * w, y = Math.random() * h, r = 60 + Math.random() * 200;
+      for (let i = 0; i < 40; i++) {
+        const x = Math.random() * w, y = Math.random() * h, r = 80 + Math.random() * 240;
         const grad = g.createRadialGradient(x, y, 0, x, y, r);
-        const light = Math.random() > 0.5;
-        grad.addColorStop(0, light ? "rgba(255,255,250,0.10)" : "rgba(70,66,60,0.07)");
+        const light = Math.random() > 0.55;
+        grad.addColorStop(0, light ? "rgba(255,255,245,0.05)" : "rgba(0,0,0,0.16)");
         grad.addColorStop(1, "rgba(0,0,0,0)");
         g.fillStyle = grad;
         g.fillRect(x - r, y - r, r * 2, r * 2);
       }
-      const grit = Math.floor((w * h) / 28);
-      for (let i = 0; i < grit; i++) {
-        const dark = Math.random() > 0.45;
-        g.fillStyle = dark ? `rgba(60,56,50,${0.05 + Math.random() * 0.16})` : `rgba(255,255,250,${0.08 + Math.random() * 0.2})`;
-        const s = Math.random() > 0.9 ? 1.6 : 0.9;
+      const stones = Math.floor((w * h) / 9);
+      for (let i = 0; i < stones; i++) {
+        const v = Math.random();
+        g.fillStyle = v > 0.55
+          ? `rgba(${170 + Math.random() * 60},${165 + Math.random() * 55},${150 + Math.random() * 50},${0.06 + Math.random() * 0.22})`
+          : `rgba(0,0,0,${0.15 + Math.random() * 0.35})`;
+        const s = Math.random() > 0.93 ? 2.2 : Math.random() > 0.6 ? 1.3 : 0.8;
         g.fillRect(Math.random() * w, Math.random() * h, s, s);
       }
-      // Slab joints, about every 520px, slightly off true.
-      const joint = (x1: number, y1: number, x2: number, y2: number) => {
-        g.strokeStyle = "rgba(50,47,42,0.38)"; g.lineWidth = 2.2;
-        g.beginPath(); g.moveTo(x1, y1); g.lineTo(x2, y2); g.stroke();
-        g.strokeStyle = "rgba(255,255,250,0.35)"; g.lineWidth = 1;
-        g.beginPath(); g.moveTo(x1 + 2, y1 + 2); g.lineTo(x2 + 2, y2 + 2); g.stroke();
-      };
-      const gx = Math.max(380, w * 0.42);
-      for (let x = gx * 0.7; x < w; x += gx) joint(x, 0, x + 6, h);
-      for (let y = h * 0.74; y < h; y += 520) joint(0, y, w, y + 4);
       concrete = c;
 
       // Gum: flat, irregular blobs, a bit denser on the right and in trails.
@@ -87,7 +80,7 @@ export default function Pavement({
           const p = spots[Math.floor(Math.random() * spots.length)];
           x = p.x + (Math.random() - 0.5) * 90; y = p.y + (Math.random() - 0.5) * 60;
         }
-        if (x < w * 0.5 && Math.random() < 0.55) continue; // keep the headline readable
+        if (x < w * 0.55 && Math.random() < 0.6) continue; // keep the headline readable
         const r = 3 + Math.pow(Math.random(), 2) * 11;
         const k = 7 + Math.floor(Math.random() * 3);
         const pts: [number, number][] = Array.from({ length: k }, (_, j) => {
@@ -116,8 +109,8 @@ export default function Pavement({
         ctx.translate(s.x, s.y);
         ctx.scale(k, k);
         // stain around the gum
-        ctx.globalAlpha = 0.1 * a;
-        ctx.fillStyle = "#3d3a35";
+        ctx.globalAlpha = 0.35 * a;
+        ctx.fillStyle = "#121211";
         ctx.beginPath(); ctx.ellipse(0, 0, s.r * 1.9, s.r * 1.6, 0, 0, Math.PI * 2); ctx.fill();
         // the gum itself
         ctx.globalAlpha = 0.92 * a;
@@ -126,14 +119,14 @@ export default function Pavement({
         s.pts.forEach(([px, py], i) => (i ? ctx.lineTo(px, py) : ctx.moveTo(px, py)));
         ctx.closePath(); ctx.fill();
         // trodden-flat highlight
-        ctx.globalAlpha = 0.28 * a;
+        ctx.globalAlpha = 0.22 * a;
         ctx.fillStyle = "#e9e6df";
         ctx.beginPath(); ctx.ellipse(-s.r * 0.25, -s.r * 0.3, s.r * 0.35, s.r * 0.2, -0.5, 0, Math.PI * 2); ctx.fill();
         ctx.restore();
         // dissolve ripple
         if (c > 0) {
           ctx.globalAlpha = (1 - c) * 0.9;
-          ctx.strokeStyle = "#2f7a4f";
+          ctx.strokeStyle = "#8fc4a6";
           ctx.lineWidth = 1.4;
           ctx.beginPath(); ctx.arc(s.x, s.y, s.r * (1 + c * 2.2), 0, Math.PI * 2); ctx.stroke();
         }

@@ -33,7 +33,7 @@ const HeroSection = () => {
   const stickOpacity = useTransform(scrollYProgress, [0.5, 0.7], [1, 0]);
   const cueOpacity = useTransform(scrollYProgress, [0, 0.08], [1, 0]);
 
-  const lines = ["Chew some gum.", "Skip the mess."];
+  const lines = ["Stop", "chewing", "plastic."];
 
   return (
     <section
@@ -43,19 +43,19 @@ const HeroSection = () => {
       style={{ height: reduce ? "100svh" : "260svh" }}
       aria-label="DissolvaGum introduction"
     >
-      <div className="sticky top-0 h-[100svh] overflow-hidden bg-[#c9c6bf] text-[#12261d]">
+      <div className="sticky top-0 h-[100svh] overflow-hidden bg-[#2a2a29] text-white">
         <Pavement progressRef={progress} still={reduce} />
-        {/* a pool of light behind the words, so the headline stays easy to read */}
+        {/* a shadow behind the words, so the headline stays easy to read */}
         <div
           className="pointer-events-none absolute inset-0"
-          style={{ background: "radial-gradient(55% 70% at 22% 50%, rgba(240,237,229,0.8) 0%, rgba(240,237,229,0) 100%)" }}
+          style={{ background: "radial-gradient(60% 75% at 20% 55%, rgba(18,18,17,0.78) 0%, rgba(18,18,17,0) 100%)" }}
           aria-hidden
         />
         <motion.div className="absolute inset-0" style={reduce ? undefined : { opacity: stickOpacity }}>
           <GumScene
             progressRef={progress}
             still={reduce}
-            label="A 3D stick of gum floating above a sidewalk covered in old gum."
+            label="A 3D stick of gum floating above a street covered in old gum."
           />
         </motion.div>
 
@@ -67,16 +67,16 @@ const HeroSection = () => {
           style={reduce ? undefined : { y: copyY, opacity: copyOpacity }}
         >
           <motion.p
-            className="text-sm font-bold text-[#3f5a4c]"
+            className="text-sm font-bold text-[#b4c9bb]"
             initial={reduce ? false : { opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: EASE, delay: 0.1 }}
           >
             A concept from Folsom, California
           </motion.p>
-          <h1 className="text-[clamp(44px,6vw,92px)] leading-[0.96] tracking-[-0.04em]">
+          <h1 className="text-[clamp(56px,9.5vw,148px)] uppercase leading-[0.86] tracking-[-0.045em]">
             {lines.map((line, i) => (
-              <span key={line} className="block overflow-hidden pb-[0.06em]">
+              <span key={line} className={`block overflow-hidden pb-[0.04em] ${i === 2 ? "text-mint" : ""}`}>
                 <motion.span
                   className="block"
                   initial={reduce ? false : { y: "105%" }}
@@ -89,13 +89,13 @@ const HeroSection = () => {
             ))}
           </h1>
           <motion.p
-            className="max-w-[42ch] text-lg leading-[1.5] text-[#2c4337] md:text-xl"
+            className="max-w-[40ch] text-lg leading-[1.5] text-[#c9d6ce] md:text-xl"
             initial={reduce ? false : { opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.9, ease: EASE, delay: 0.6 }}
           >
-            Four high school students are designing a gum that is safe to swallow when you finish chewing, so it never
-            ends up on the sidewalk.
+            <strong className="text-white">Chew some gum. Skip the mess.</strong> Four high school students are designing
+            a gum that is safe to swallow, so it never ends up on the sidewalk.
           </motion.p>
           <motion.div
             className="flex flex-wrap items-center gap-x-6 gap-y-1"
@@ -103,8 +103,8 @@ const HeroSection = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.9, ease: EASE, delay: 0.75 }}
           >
-            <CtaLink href="/support-interest">Follow the project</CtaLink>
-            <CtaLink href="#how" variant="text">See how it works</CtaLink>
+            <CtaLink href="/support-interest" variant="light">Follow the project</CtaLink>
+            <CtaLink href="#how" variant="text-light">See how it works</CtaLink>
           </motion.div>
         </motion.div>
         </div>
@@ -128,9 +128,9 @@ const HeroSection = () => {
             style={{ opacity: cueOpacity }}
             aria-hidden
           >
-            <span className="relative h-8 w-px overflow-hidden bg-[#12261d]/25">
+            <span className="relative h-8 w-px overflow-hidden bg-white/25">
               <motion.span
-                className="absolute inset-x-0 top-0 h-3 bg-[#12261d]"
+                className="absolute inset-x-0 top-0 h-3 bg-white"
                 animate={{ y: [-12, 32] }}
                 transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
               />

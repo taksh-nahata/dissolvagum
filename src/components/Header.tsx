@@ -15,7 +15,7 @@ const Header = () => {
   const pathname = usePathname();
   const isHome = pathname === '/';
   const [open, setOpen] = useState(false);
-  // On the home page the header floats over the sidewalk hero until the story scrolls past.
+  // On the home page the header floats over the dark street hero until the story scrolls past.
   const [overHero, setOverHero] = useState(isHome);
   const [top, setTop] = useState(0);
 
@@ -54,7 +54,7 @@ const Header = () => {
   return (
     <header
       className={`${isHome ? 'fixed inset-x-0' : 'sticky top-0'} z-40 w-full transition-colors duration-300 ${
-        overHero ? 'bg-transparent text-[#12261d]' : 'bg-background/85 text-foreground backdrop-blur'
+        overHero ? 'bg-transparent text-white' : 'bg-background/85 text-foreground backdrop-blur'
       }`}
       style={isHome ? { top } : undefined}
     >
@@ -72,7 +72,9 @@ const Header = () => {
           </nav>
           <Link
             href="/support-interest"
-            className="hidden h-10 items-center rounded-lg bg-[#12261d] px-4 text-[15px] font-bold text-white transition-colors hover:bg-[#1f5133] md:inline-flex"
+            className={`hidden h-10 items-center rounded-lg px-4 text-[15px] font-bold transition-colors md:inline-flex ${
+              overHero ? "bg-white text-[#12261d] hover:bg-mint" : "bg-[#12261d] text-white hover:bg-[#1f5133]"
+            }`}
           >
             Get involved
           </Link>

@@ -2,9 +2,8 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import HeroSection from "@/components/HeroSection";
 import Manifesto from "@/components/home/Manifesto";
-import GumTimeline from "@/components/home/GumTimeline";
-import HowItWorks from "@/components/home/HowItWorks";
-import Nowhere from "@/components/home/Nowhere";
+import SidewalkStory from "@/components/home/SidewalkStory";
+import Swallow from "@/components/home/Swallow";
 import Team from "@/components/home/Team";
 import FollowCta from "@/components/home/FollowCta";
 
@@ -15,9 +14,9 @@ export default function HomePage() {
       <main className="flex flex-col">
         <HeroSection />
         <Manifesto />
-        <GumTimeline />
-        <HowItWorks />
-        <Nowhere />
+        <SidewalkStory variant="problem" />
+        <Swallow />
+        <SidewalkStory variant="ours" />
         <Team />
         <FollowCta />
       </main>

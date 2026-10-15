@@ -24,7 +24,7 @@ const faqData = [
 	},
 	{
 		question: "How long would it take to break down?",
-		answer: "Our target is about 30 days. We have not reached it yet.",
+		answer: "It is designed to be swallowed, so it never reaches the ground. If it is spat out anyway, our target is for it to break down within about 5 days. We have not reached that yet.",
 	},
 	{
 		question: "How can I help?",

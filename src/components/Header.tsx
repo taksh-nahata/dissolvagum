@@ -2,33 +2,27 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Moon, Sun, Menu, X } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 import { useState, useEffect } from 'react';
 
+// Kept short on purpose: everything else lives in the footer.
 const links = [
-  { href: '/how-it-works', label: 'How it works' },
   { href: '/about', label: 'About' },
   { href: '/faq', label: 'FAQ' },
-  { href: '/business-interest', label: 'Business Interest' },
-  { href: '/support-interest', label: 'Support Interest' },
-  { href: '/contact', label: 'Contact' },
 ];
 
 const Header = () => {
   const pathname = usePathname();
   const isHome = pathname === '/';
-  const [darkMode, setDarkMode] = useState(false);
-  const [mounted, setMounted] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [open, setOpen] = useState(false);
   // On the home page the header floats over the sidewalk hero until the story scrolls past.
   const [overHero, setOverHero] = useState(isHome);
   const [top, setTop] = useState(0);
 
   useEffect(() => {
-    setMounted(true);
-    const isDark = localStorage.getItem('darkMode') === 'true';
-    setDarkMode(isDark);
-    document.documentElement.classList.toggle('dark', isDark);
+    // The dark-mode toggle is gone; clear a choice saved by the old one.
+    document.documentElement.classList.remove('dark');
+    try { localStorage.removeItem('darkMode'); } catch {}
   }, []);
 
   useEffect(() => {
@@ -50,24 +44,12 @@ const Header = () => {
       window.removeEventListener('scroll', update);
       window.removeEventListener('resize', update);
     };
-  }, [isHome, mounted]);
-
-  const toggleDarkMode = () => {
-    const next = !darkMode;
-    setDarkMode(next);
-    localStorage.setItem('darkMode', next.toString());
-    document.documentElement.classList.toggle('dark', next);
-  };
-
-  if (!mounted) return null;
+  }, [isHome]);
 
   const linkClass = (href: string) =>
-    `ds-label whitespace-nowrap py-2 underline-offset-[10px] decoration-2 transition-opacity ${
-      pathname === href ? 'underline' : 'opacity-80 hover:opacity-100'
+    `text-[15px] font-bold underline-offset-[8px] decoration-2 transition-opacity ${
+      pathname === href ? 'underline' : 'opacity-75 hover:opacity-100'
     }`;
-  const iconButton =
-    'rounded-full p-2.5 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ' +
-    (overHero ? 'hover:bg-black/5' : 'hover:bg-secondary');
 
   return (
     <header
@@ -80,36 +62,39 @@ const Header = () => {
         <Link href="/" className="text-2xl uppercase tracking-[0.12em]">
           DissolvaGum
         </Link>
-        <nav className="hidden items-center gap-7 xl:flex" aria-label="Primary">
-          {links.map((l) => (
-            <Link key={l.href} href={l.href} className={linkClass(l.href)} aria-current={pathname === l.href ? 'page' : undefined}>
-              {l.label}
-            </Link>
-          ))}
-        </nav>
-        <div className="flex items-center gap-1">
-          <button onClick={toggleDarkMode} className={iconButton} aria-label="Toggle dark mode">
-            {darkMode ? <Sun size={20} strokeWidth={1.75} /> : <Moon size={20} strokeWidth={1.75} />}
-          </button>
-          <button className={`${iconButton} xl:hidden`} onClick={() => setIsMobileMenuOpen(true)} aria-label="Open mobile menu">
+        <div className="flex items-center gap-7">
+          <nav className="hidden items-center gap-7 md:flex" aria-label="Primary">
+            {links.map((l) => (
+              <Link key={l.href} href={l.href} className={linkClass(l.href)} aria-current={pathname === l.href ? 'page' : undefined}>
+                {l.label}
+              </Link>
+            ))}
+          </nav>
+          <Link
+            href="/support-interest"
+            className="hidden h-10 items-center rounded-lg bg-[#12261d] px-4 text-[15px] font-bold text-white transition-colors hover:bg-[#1f5133] md:inline-flex"
+          >
+            Get involved
+          </Link>
+          <button className="rounded-full p-2 md:hidden" onClick={() => setOpen(true)} aria-label="Open menu">
             <Menu size={24} strokeWidth={1.75} />
           </button>
         </div>
       </div>
-      {isMobileMenuOpen && (
+      {open && (
         <div className="fixed inset-0 z-50 flex flex-col bg-deep text-white">
           <div className="flex items-center justify-between px-[clamp(16px,2.8vw,44px)] py-4">
             <span className="text-2xl uppercase tracking-[0.12em]">DissolvaGum</span>
-            <button className="rounded-full p-2.5 hover:bg-white/10" onClick={() => setIsMobileMenuOpen(false)} aria-label="Close mobile menu">
+            <button className="rounded-full p-2 hover:bg-white/10" onClick={() => setOpen(false)} aria-label="Close menu">
               <X size={24} strokeWidth={1.75} />
             </button>
           </div>
           <nav className="mt-6 flex flex-col gap-1 px-[clamp(16px,2.8vw,44px)]" aria-label="Mobile">
-            {[{ href: '/', label: 'Home' }, ...links].map((l) => (
+            {[{ href: '/', label: 'Home' }, ...links, { href: '/support-interest', label: 'Get involved' }].map((l) => (
               <Link
                 key={l.href}
                 href={l.href}
-                onClick={() => setIsMobileMenuOpen(false)}
+                onClick={() => setOpen(false)}
                 className={`py-3 text-3xl font-bold tracking-tight transition-opacity ${pathname === l.href ? 'underline decoration-2 underline-offset-8' : 'opacity-80 hover:opacity-100'}`}
               >
                 {l.label}

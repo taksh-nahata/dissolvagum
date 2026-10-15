@@ -55,7 +55,6 @@ const HeroSection = () => {
           <GumScene
             progressRef={progress}
             still={reduce}
-            variant="hero"
             label="A 3D stick of gum floating above a sidewalk covered in old gum."
           />
         </motion.div>
@@ -139,12 +138,6 @@ const HeroSection = () => {
             <span className="text-sm font-bold">Scroll</span>
           </motion.div>
         )}
-        <div className="absolute bottom-6 right-[clamp(16px,2.8vw,44px)] max-w-[30ch] text-right text-sm leading-snug text-[#2c4337]">
-          <p className="font-bold">
-            {cleaned ? "Ours is designed to be digestible and biodegradable." : "Conventional gum base doesn't break down."}
-          </p>
-          <p className="italic opacity-80">Illustration of the design goal.</p>
-        </div>
       </div>
     </section>
   );

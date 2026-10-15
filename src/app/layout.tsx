@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { Analytics } from '@vercel/analytics/next';
 import { SpeedInsights } from "@vercel/speed-insights/next";
-import SurveyPopupClientWrapper from "@/components/SurveyPopupClientWrapper";
 
 export const metadata: Metadata = {
   title: "DissolvaGum | Chew some gum. Skip the mess.",
@@ -116,7 +115,7 @@ export default function RootLayout({
                 "name": "How long would it take to break down?",
                 "acceptedAnswer": {
                   "@type": "Answer",
-                  "text": "Our target is about 30 days. We have not reached it yet."
+                  "text": "It is designed to be swallowed, so it never reaches the ground. If it is spat out anyway, our target is for it to break down within about 5 days. We have not reached that yet."
                 }
               }
             ]
@@ -139,9 +138,8 @@ export default function RootLayout({
       </head>
       <body className="bg-background text-foreground">
         <div id="site-banner" className="bg-secondary px-4 py-2 text-center text-xs font-bold text-foreground sm:text-sm">
-          DissolvaGum is in early development and is not a product you can buy yet. This site is for awareness and demonstration. We are looking for businesses, supporters and partners.
+          A concept in development. Nothing is for sale.
         </div>
-        <SurveyPopupClientWrapper />
         {children}
         <Analytics />
         <SpeedInsights />

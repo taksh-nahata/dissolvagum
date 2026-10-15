@@ -1,50 +1,37 @@
-"use client";
-
 import Link from 'next/link';
 import { Instagram } from 'lucide-react';
 
-const linkClass = "transition-colors hover:text-white";
+const LINKS = [
+  { href: '/how-it-works', label: 'How it works' },
+  { href: '/about', label: 'About' },
+  { href: '/faq', label: 'FAQ' },
+  { href: '/contact', label: 'Contact' },
+  { href: '/support-interest', label: 'Support' },
+  { href: '/business-interest', label: 'Business' },
+  { href: '/legal/privacy', label: 'Privacy' },
+  { href: '/legal/terms', label: 'Terms' },
+  { href: '/legal/accessibility', label: 'Accessibility' },
+];
 
-const Footer = () => {
-  return (
-    <footer className="w-full bg-deep py-12 text-deep-foreground md:py-16">
-      <div className="mx-auto max-w-7xl px-4 md:px-8">
-        <div className="mb-10 grid grid-cols-1 gap-10 md:grid-cols-3">
-          <div>
-            <p className="mb-4 text-2xl uppercase tracking-[0.12em] text-white">DissolvaGum</p>
-            <p className="max-w-[34ch]">
-              Chew some gum. Skip the mess. A gum designed to be safe to swallow, in development in Folsom, California.
-            </p>
-          </div>
-          <div>
-            <h4 className="ds-label mb-4 text-white">Explore</h4>
-            <ul className="space-y-2">
-              <li><Link href="/how-it-works" className={linkClass}>How it works</Link></li>
-              <li><Link href="/about" className={linkClass}>About us</Link></li>
-              <li><Link href="/faq" className={linkClass}>FAQ</Link></li>
-            </ul>
-          </div>
-          <div>
-            <h4 className="ds-label mb-4 text-white">Legal and support</h4>
-            <ul className="space-y-2">
-              <li><Link href="/legal/terms" className={linkClass}>Terms &amp; Conditions</Link></li>
-              <li><Link href="/legal/privacy" className={linkClass}>Privacy Policy</Link></li>
-              <li><Link href="/legal/accessibility" className={linkClass}>Accessibility Statement</Link></li>
-              <li><Link href="/contact" className={linkClass}>Contact Us</Link></li>
-              <li><Link href="/business-interest" className={linkClass}>Business Interest</Link></li>
-              <li><Link href="/support-interest" className={linkClass}>Support Interest</Link></li>
-            </ul>
-          </div>
-        </div>
-        <div className="flex flex-col items-center justify-between gap-4 border-t border-white/15 pt-8 md:flex-row">
-          <p className="text-sm">&copy; {new Date().getFullYear()} DissolvaGum. All rights reserved.</p>
-          <a href="https://www.instagram.com/dissolvagum/" aria-label="Instagram" className={linkClass}>
-            <Instagram size={20} />
-          </a>
-        </div>
+const Footer = () => (
+  <footer className="w-full bg-[#0e1a17] px-[clamp(16px,2.8vw,44px)] py-10 text-[#8fa79a]">
+    <div className="mx-auto flex max-w-[1200px] flex-col gap-6 md:flex-row md:items-center md:justify-between">
+      <p className="text-xl uppercase tracking-[0.12em] text-[#e8f3ec]">DissolvaGum</p>
+      <nav className="flex flex-wrap gap-x-5 gap-y-2 text-sm" aria-label="Footer">
+        {LINKS.map((l) => (
+          <Link key={l.href} href={l.href} className="transition-colors hover:text-[#e8f3ec]">
+            {l.label}
+          </Link>
+        ))}
+      </nav>
+      <div className="flex items-center gap-4 text-sm">
+        <span>&copy; {new Date().getFullYear()} DissolvaGum</span>
+        <a href="https://www.instagram.com/dissolvagum/" aria-label="Instagram" className="transition-colors hover:text-[#e8f3ec]">
+          <Instagram size={18} />
+        </a>
       </div>
-    </footer>
-  );
-};
+    </div>
+  </footer>
+);
 
 export default Footer;

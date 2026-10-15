@@ -38,13 +38,18 @@ export default function FollowCta() {
           transition={{ duration: 0.9, ease: EASE, delay: 0.3 }}
         >
           <p className="text-xl leading-[1.5] text-[#b4c9bb]">
-            DissolvaGum is an early-stage concept, and nothing is for sale. If you want to see where it goes, or help it
-            get there, let us know.
+            If you want to see where this goes, or help it get there, let us know.
           </p>
           <div className="flex flex-wrap items-center gap-x-6 gap-y-3">
-            <CtaLink href="/support-interest" variant="light">I want to support it</CtaLink>
-            <CtaLink href="/business-interest" variant="light-outline">I represent a business</CtaLink>
-            <CtaLink href="/contact" variant="text-light">Contact the team</CtaLink>
+            <CtaLink href="/support-interest" variant="light">Get involved</CtaLink>
+            <a
+              href="https://forms.gle/XshZmHL6ix4sesuE9"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="py-3 text-[15px] font-bold text-[#e8f3ec] underline decoration-2 underline-offset-[6px] transition-colors hover:text-mint"
+            >
+              Take our 40-second survey
+            </a>
           </div>
         </motion.div>
       </div>

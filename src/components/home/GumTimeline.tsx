@@ -7,7 +7,7 @@ const EASE = [0.16, 0.84, 0.24, 1] as const;
 const ROWS = [
   { name: "Conventional gum base", note: "Does not break down", width: 100, bar: "linear-gradient(90deg, #6b6862 0%, #6b6862 75%, rgba(107,104,98,0) 100%)" },
   { name: "Chicle-based gum", note: "Months to years", width: 62, bar: "linear-gradient(90deg, #a59f97 0%, #a59f97 70%, rgba(165,159,151,0) 100%)" },
-  { name: "DissolvaGum", note: "About 30 days (target)", width: 7, bar: "#1f5133", ours: true },
+  { name: "DissolvaGum, if spat out", note: "About 5 days (target)", width: 3, bar: "#1f5133", ours: true },
 ];
 
 export default function GumTimeline() {
@@ -25,7 +25,7 @@ export default function GumTimeline() {
           How long gum sticks around.
         </motion.h2>
         <p className="mb-16 max-w-[48ch] text-lg text-ink-2">
-          After it is spat out, most gum stays where it lands. We are designing ours to break down.
+          After it is spat out, most gum stays where it lands. Ours is designed to be swallowed, and to break down fast if it is not.
         </p>
         <div className="flex flex-col gap-10">
           {ROWS.map((row, i) => (

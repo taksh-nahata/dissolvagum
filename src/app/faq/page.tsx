@@ -23,10 +23,6 @@ const faqData = [
 		answer: "The spent gum is meant to be digestible and biodegradable. These are design goals we are working toward, not proven results.",
 	},
 	{
-		question: "How long would it take to break down?",
-		answer: "It is designed to be swallowed, so it never reaches the ground. If it is spat out anyway, our target is for it to break down within about 5 days. We have not reached that yet.",
-	},
-	{
 		question: "How can I help?",
 		answer: "Fill in the support interest form, or the business interest form if you represent a company. You can also reach the team through the contact page.",
 	},

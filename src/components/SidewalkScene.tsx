@@ -7,8 +7,7 @@ import { concreteTexture, fbm, gritTexture, makeRenderer, runWhileVisible, studi
 import { TIMELINE } from "@/lib/sidewalkTimeline";
 
 /* A chewed wad of gum is spat onto a sidewalk, lands, and gets stepped on. Then time passes.
-   variant "problem": conventional gum darkens into black gunk and stays (the sidewalk fills with it).
-   variant "ours": our gum breaks down and is gone by about day 5 (the sidewalk stays clean).
+   Conventional gum darkens into black gunk and stays; the camera pulls back to a sidewalk full of it.
    `progressRef` (0 to 1) scrubs the whole thing; the timeline is in lib/sidewalkTimeline. */
 
 
@@ -58,12 +57,11 @@ function wadGeometry() {
   return { geo, flat };
 }
 
-/** Morphs wad -> splat (uSplat), adds grime (uAge) and breakdown (uDis) to a physical material. */
+/** Morphs wad -> splat (uSplat) and adds grime (uAge) to a physical material. */
 function gumMaterial(color: string, grit: THREE.Texture) {
   const uniforms = {
     uSplat: { value: 0 },
     uAge: { value: 0 },
-    uDis: { value: 0 },
     uGrit: { value: grit },
   };
   const mat = new THREE.MeshPhysicalMaterial({
@@ -88,23 +86,15 @@ function gumMaterial(color: string, grit: THREE.Texture) {
       .replace(
         "#include <common>",
         `#include <common>
-uniform sampler2D uGrit; uniform float uAge; uniform float uDis; varying vec2 vGritUv;
+uniform sampler2D uGrit; uniform float uAge; varying vec2 vGritUv;
 float dgH(vec2 p){ return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
 float dgN(vec2 p){ vec2 i = floor(p), f = fract(p); f = f*f*(3.0-2.0*f);
   return mix(mix(dgH(i), dgH(i+vec2(1,0)), f.x), mix(dgH(i+vec2(0,1)), dgH(i+vec2(1,1)), f.x), f.y); }`
       )
       .replace(
-        "#include <clipping_planes_fragment>",
-        `#include <clipping_planes_fragment>
-float dgT = dgN(vGritUv * 7.0) * 0.55 + dgN(vGritUv * 19.0) * 0.2 + (1.0 - length(vGritUv - 0.5) * 1.6) * 0.25;
-if (uDis > 0.0 && dgT < uDis * 1.05) discard;
-float dgEdge = uDis > 0.0 ? 1.0 - smoothstep(uDis * 1.05, uDis * 1.05 + 0.06, dgT) : 0.0;`
-      )
-      .replace(
         "#include <map_fragment>",
         `#include <map_fragment>
-diffuseColor.rgb *= mix(vec3(1.0), texture2D(uGrit, vGritUv * 1.6).rgb, uAge);
-diffuseColor.rgb = mix(diffuseColor.rgb, vec3(0.86, 0.84, 0.8), dgEdge * 0.7);`
+diffuseColor.rgb *= mix(vec3(1.0), texture2D(uGrit, vGritUv * 1.6).rgb, uAge);`
       );
   };
   return { mat, uniforms };
@@ -143,12 +133,10 @@ function treadTexture() {
 
 export default function SidewalkScene({
   progressRef,
-  variant,
   still = false,
   label,
 }: {
   progressRef: MutableRefObject<number>;
-  variant: "problem" | "ours";
   still?: boolean;
   label: string;
 }) {
@@ -196,7 +184,7 @@ export default function SidewalkScene({
     // the gum
     const grit = gritTexture();
     const { geo, flat } = wadGeometry();
-    const fresh = variant === "problem" ? new THREE.Color("#ecc9d0") : new THREE.Color("#d3e9dc");
+    const fresh = new THREE.Color("#ecc9d0");
     const aged = new THREE.Color("#1c1917");
     const { mat, uniforms } = gumMaterial(`#${fresh.getHexString()}`, grit);
     const gum = new THREE.Mesh(geo, mat);
@@ -217,7 +205,7 @@ export default function SidewalkScene({
     scene.add(shoe);
 
     // other old gum on the sidewalk, revealed when the camera pulls back (problem only)
-    const SPOTS = variant === "problem" ? 90 : 0;
+    const SPOTS = 90;
     const spotMat = new THREE.MeshStandardMaterial({ color: "#ffffff", roughness: 0.95 });
     const spots = new THREE.InstancedMesh(flat, spotMat, Math.max(1, SPOTS));
     spots.receiveShadow = true;
@@ -243,7 +231,7 @@ export default function SidewalkScene({
 
     const near = new THREE.Vector3(), far = new THREE.Vector3(), look = new THREE.Vector3();
     const draw = (time: number) => {
-      const p = still ? (variant === "problem" ? 0.7 : 0.5) : progressRef.current;
+      const p = still ? 0.7 : progressRef.current;
       const fall = span(TIMELINE.fall, p);
       const impact = span(TIMELINE.impact, p);
       const step = span(TIMELINE.step, p);
@@ -267,19 +255,11 @@ export default function SidewalkScene({
       const shake = step > 0.45 && step < 0.6 ? Math.sin(time * 70) * 0.006 : 0;
 
       // time passing
-      if (variant === "problem") {
-        mat.color.copy(fresh).lerp(aged, smooth(age));
-        uniforms.uAge.value = smooth(clamp01(age * 1.3));
-        mat.roughness = 0.32 + 0.63 * age;
-        mat.clearcoat = 0.6 * (1 - age);
-        mat.sheen = 0.3 * (1 - age);
-      } else {
-        // ours: dulls slightly, then breaks down from the edges in
-        mat.roughness = 0.32 + 0.4 * age;
-        mat.clearcoat = 0.6 * (1 - age);
-        uniforms.uDis.value = smooth(clamp01((age - 0.1) / 0.85));
-        gum.visible = uniforms.uDis.value < 0.999;
-      }
+      mat.color.copy(fresh).lerp(aged, smooth(age));
+      uniforms.uAge.value = smooth(clamp01(age * 1.3));
+      mat.roughness = 0.32 + 0.63 * age;
+      mat.clearcoat = 0.6 * (1 - age);
+      mat.sheen = 0.3 * (1 - age);
 
       for (let i = 0; i < SPOTS; i++) {
         const s = spotData[i];
@@ -320,7 +300,7 @@ export default function SidewalkScene({
       renderer.dispose();
       renderer.domElement.remove();
     };
-  }, [progressRef, variant, still]);
+  }, [progressRef, still]);
 
   return <div ref={hostRef} className="absolute inset-0" role="img" aria-label={label} />;
 }

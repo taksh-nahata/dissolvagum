@@ -14,9 +14,8 @@ export default function HomePage() {
       <main className="flex flex-col">
         <HeroSection />
         <Manifesto />
-        <SidewalkStory variant="problem" />
+        <SidewalkStory />
         <Swallow />
-        <SidewalkStory variant="ours" />
         <Team />
         <FollowCta />
       </main>

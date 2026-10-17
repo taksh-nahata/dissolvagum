@@ -18,6 +18,21 @@ const Header = () => {
   // On the home page the header floats over the dark street hero until the story scrolls past.
   const [overHero, setOverHero] = useState(isHome);
   const [top, setTop] = useState(0);
+  const [hidden, setHidden] = useState(false);
+
+  // Hide while scrolling down, come back on any scroll up.
+  useEffect(() => {
+    let last = window.scrollY;
+    const onScroll = () => {
+      const y = window.scrollY;
+      if (Math.abs(y - last) > 6) {
+        setHidden(y > last && y > 160);
+        last = y;
+      }
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
 
   useEffect(() => {
     // The dark-mode toggle is gone; clear a choice saved by the old one.
@@ -53,7 +68,7 @@ const Header = () => {
 
   return (
     <header
-      className={`${isHome ? 'fixed inset-x-0' : 'sticky top-0'} z-40 w-full transition-colors duration-300 ${
+      className={`${isHome ? 'fixed inset-x-0' : 'sticky top-0'} z-40 w-full transition-[color,background-color,transform] duration-500 [transition-timing-function:cubic-bezier(.16,.84,.24,1)] ${hidden && !open ? '-translate-y-[120%]' : 'translate-y-0'} ${
         overHero ? 'bg-transparent text-white' : 'bg-background/85 text-foreground backdrop-blur'
       }`}
       style={isHome ? { top } : undefined}

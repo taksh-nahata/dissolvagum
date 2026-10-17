@@ -1,49 +1,64 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { useRef, useState } from "react";
-import { motion, useMotionValueEvent, useReducedMotion, useScroll, useTransform } from "framer-motion";
+import { useRef } from "react";
+import { motion, useMotionTemplate, useMotionValueEvent, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import CtaLink from "@/components/CtaLink";
 import Pavement from "@/components/Pavement";
+import RevealLines, { EASE } from "@/components/RevealLines";
 
 // three.js only loads in the browser, after the page has rendered.
 const GumScene = dynamic(() => import("@/components/GumScene"), { ssr: false });
 
-const EASE = [0.16, 0.84, 0.24, 1] as const;
-
-/* Pinned sidewalk. Scroll timeline (0 to 1):
-   0-0.55 headline holds, then lifts away; 0.36-0.9 the gum on the pavement dissolves;
-   0.62-0.9 the closing line lands; the stick spins throughout and leaves at the end. */
+/* Pinned street. Scroll timeline (0 to 1):
+   0.12-0.38  the intro lifts away and blurs out
+   0.30-0.55  "Every one of those spots is old gum."
+   0.36-0.90  the gum on the street dissolves (in Pavement)
+   0.60-0.90  "Ours is designed to leave nothing behind."
+   0.86-1     the whole stage shrinks into a rounded card as the next section arrives */
 const HeroSection = () => {
   const outer = useRef<HTMLElement>(null);
   const progress = useRef(0);
   const reduce = useReducedMotion() ?? false;
-  const [cleaned, setCleaned] = useState(false);
 
-  const { scrollYProgress } = useScroll({ target: outer, offset: ["start start", "end end"] });
-  useMotionValueEvent(scrollYProgress, "change", (v) => {
+  const { scrollYProgress: p } = useScroll({ target: outer, offset: ["start start", "end end"] });
+  useMotionValueEvent(p, "change", (v) => {
     progress.current = reduce ? 0 : v;
-    setCleaned(v > 0.55);
   });
 
-  const copyY = useTransform(scrollYProgress, [0.3, 0.6], [0, -90]);
-  const copyOpacity = useTransform(scrollYProgress, [0.35, 0.58], [1, 0]);
-  const lineOpacity = useTransform(scrollYProgress, [0.62, 0.78], [0, 1]);
-  const lineScale = useTransform(scrollYProgress, [0.62, 0.9], [0.92, 1]);
-  const stickOpacity = useTransform(scrollYProgress, [0.5, 0.7], [1, 0]);
-  const cueOpacity = useTransform(scrollYProgress, [0, 0.08], [1, 0]);
+  const introY = useTransform(p, [0.12, 0.38], [0, -120]);
+  const introBlur = useTransform(p, [0.12, 0.34], [0, 14]);
+  const introOpacity = useTransform(p, [0.14, 0.36], [1, 0]);
+  const introFilter = useMotionTemplate`blur(${introBlur}px)`;
 
-  const lines = ["Stop", "chewing", "plastic."];
+  const aOpacity = useTransform(p, [0.3, 0.38, 0.48, 0.55], [0, 1, 1, 0]);
+  const aBlur = useTransform(p, [0.3, 0.38, 0.48, 0.55], [12, 0, 0, 12]);
+  const aY = useTransform(p, [0.3, 0.55], [40, -40]);
+  const bOpacity = useTransform(p, [0.6, 0.7], [0, 1]);
+  const bBlur = useTransform(p, [0.6, 0.7], [12, 0]);
+  const bY = useTransform(p, [0.6, 0.9], [40, 0]);
+  const aFilter = useMotionTemplate`blur(${aBlur}px)`;
+  const bFilter = useMotionTemplate`blur(${bBlur}px)`;
+
+  const stageScale = useTransform(p, [0.86, 1], [1, 0.9]);
+  const stageRadius = useTransform(p, [0.86, 1], [0, 36]);
+  const stageDim = useTransform(p, [0.86, 1], [0, 0.55]);
+  const cueOpacity = useTransform(p, [0, 0.06], [1, 0]);
+
+  const line = "text-[clamp(40px,5.6vw,88px)] font-bold leading-[0.95] tracking-[-0.04em]";
 
   return (
     <section
       id="story"
       ref={outer}
-      className="relative"
-      style={{ height: reduce ? "100svh" : "260svh" }}
+      className="relative bg-[#0e1a17]"
+      style={{ height: reduce ? "100svh" : "300svh" }}
       aria-label="DissolvaGum introduction"
     >
-      <div className="sticky top-0 h-[100svh] overflow-hidden bg-[#2a2a29] text-white">
+      <motion.div
+        className="sticky top-0 h-[100svh] origin-top overflow-hidden bg-[#2a2a29] text-white will-change-transform"
+        style={reduce ? undefined : { scale: stageScale, borderRadius: stageRadius }}
+      >
         <Pavement progressRef={progress} still={reduce} />
         {/* a shadow behind the words, so the headline stays easy to read */}
         <div
@@ -51,75 +66,61 @@ const HeroSection = () => {
           style={{ background: "radial-gradient(60% 75% at 20% 55%, rgba(18,18,17,0.78) 0%, rgba(18,18,17,0) 100%)" }}
           aria-hidden
         />
-        <motion.div className="absolute inset-0" style={reduce ? undefined : { opacity: stickOpacity }}>
-          <GumScene
-            progressRef={progress}
-            still={reduce}
-            label="A 3D stick of gum floating above a street covered in old gum."
-          />
-        </motion.div>
+        <GumScene progressRef={progress} still={reduce} label="A 3D stick of gum floating above a street covered in old gum." />
 
-        {/* Headline and intro */}
-        {/* positioned by the outer div; the inner one carries the scroll motion, so their transforms don't clash */}
-        <div className="absolute bottom-[12svh] left-0 right-0 max-w-[680px] px-[clamp(16px,2.8vw,44px)] md:bottom-auto md:top-1/2 md:-translate-y-1/2">
-        <motion.div
-          className="flex flex-col items-start gap-6"
-          style={reduce ? undefined : { y: copyY, opacity: copyOpacity }}
-        >
-          <motion.p
-            className="text-sm font-bold text-[#b4c9bb]"
-            initial={reduce ? false : { opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease: EASE, delay: 0.1 }}
-          >
-            A concept from Folsom, California
-          </motion.p>
-          <h1 className="text-[clamp(56px,9.5vw,148px)] uppercase leading-[0.86] tracking-[-0.045em]">
-            {lines.map((line, i) => (
-              <span key={line} className={`block overflow-hidden pb-[0.04em] ${i === 2 ? "text-mint" : ""}`}>
-                <motion.span
-                  className="block"
-                  initial={reduce ? false : { y: "105%" }}
-                  animate={{ y: "0%" }}
-                  transition={{ duration: 1.1, ease: EASE, delay: 0.2 + i * 0.14 }}
-                >
-                  {line}
-                </motion.span>
-              </span>
-            ))}
-          </h1>
-          <motion.p
-            className="max-w-[40ch] text-lg leading-[1.5] text-[#c9d6ce] md:text-xl"
-            initial={reduce ? false : { opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.9, ease: EASE, delay: 0.6 }}
-          >
-            <strong className="text-white">Chew some gum. Skip the mess.</strong> Four high school students are designing
-            a gum that is safe to swallow, so it never ends up on the sidewalk.
-          </motion.p>
+        {/* Intro: positioned by the outer div; the inner one carries the scroll motion, so transforms don't clash */}
+        <div className="absolute bottom-[10svh] left-0 right-0 max-w-[760px] px-[clamp(16px,2.8vw,44px)] md:bottom-auto md:top-1/2 md:-translate-y-1/2">
           <motion.div
-            className="flex flex-wrap items-center gap-x-6 gap-y-1"
-            initial={reduce ? false : { opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.9, ease: EASE, delay: 0.75 }}
+            className="flex flex-col items-start gap-7"
+            style={reduce ? undefined : { y: introY, opacity: introOpacity, filter: introFilter }}
           >
-            <CtaLink href="/support-interest" variant="light">Follow the project</CtaLink>
-            <CtaLink href="#how" variant="text-light">See how it works</CtaLink>
+            <motion.p
+              className="text-sm font-bold text-[#b4c9bb]"
+              initial={reduce ? false : { opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.9, ease: EASE, delay: 0.1 }}
+            >
+              A concept from Folsom, California
+            </motion.p>
+            <RevealLines
+              as="h1"
+              on="mount"
+              delay={0.2}
+              lines={["Stop", "chewing", "plastic."]}
+              className="text-[clamp(56px,9.5vw,148px)] uppercase leading-[0.86] tracking-[-0.045em]"
+              lineClassName={(i) => (i === 2 ? "text-mint" : "")}
+            />
+            <motion.p
+              className="max-w-[40ch] text-lg leading-[1.5] text-[#c9d6ce] md:text-xl"
+              initial={reduce ? false : { opacity: 0, y: 16, filter: "blur(6px)" }}
+              animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+              transition={{ duration: 1, ease: EASE, delay: 0.75 }}
+            >
+              <strong className="text-white">Chew some gum. Skip the mess.</strong> Four high school students are designing
+              a gum that is safe to swallow, so it never ends up on the sidewalk.
+            </motion.p>
+            <motion.div
+              className="flex flex-wrap items-center gap-x-6 gap-y-1"
+              initial={reduce ? false : { opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1, ease: EASE, delay: 0.9 }}
+            >
+              <CtaLink href="/support-interest" variant="light">Follow the project</CtaLink>
+              <CtaLink href="#how" variant="text-light">See how it works</CtaLink>
+            </motion.div>
           </motion.div>
-        </motion.div>
         </div>
 
-        {/* Closing line, once the sidewalk is clean */}
+        {/* Two short lines while the street clears */}
         {!reduce && (
-          <motion.div
-            className="pointer-events-none absolute inset-0 grid place-items-center px-6 text-center"
-            style={{ opacity: lineOpacity, scale: lineScale }}
-            aria-hidden={!cleaned}
-          >
-            <p className="max-w-[16ch] text-balance text-[clamp(40px,6.4vw,104px)] font-bold leading-[0.95] tracking-[-0.045em]">
-              Designed to leave nothing behind.
-            </p>
-          </motion.div>
+          <div className="pointer-events-none absolute bottom-[12svh] left-0 right-0 grid max-w-[720px] px-[clamp(16px,2.8vw,44px)] md:bottom-auto md:top-1/2 md:-translate-y-1/2" aria-hidden>
+            <motion.p className={`col-start-1 row-start-1 ${line}`} style={{ opacity: aOpacity, y: aY, filter: aFilter }}>
+              Every one of those spots is old gum.
+            </motion.p>
+            <motion.p className={`col-start-1 row-start-1 ${line}`} style={{ opacity: bOpacity, y: bY, filter: bFilter }}>
+              Ours is designed to leave <span className="text-mint">nothing</span> behind.
+            </motion.p>
+          </div>
         )}
 
         {!reduce && (
@@ -138,7 +139,9 @@ const HeroSection = () => {
             <span className="text-sm font-bold">Scroll</span>
           </motion.div>
         )}
-      </div>
+        {/* dims as the stage shrinks away */}
+        {!reduce && <motion.div className="pointer-events-none absolute inset-0 bg-black" style={{ opacity: stageDim }} aria-hidden />}
+      </motion.div>
     </section>
   );
 };

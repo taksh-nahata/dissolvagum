@@ -1,5 +1,7 @@
 "use client";
 
+import RevealLines from "@/components/RevealLines";
+
 import Image from "next/image";
 import { motion, useReducedMotion } from "framer-motion";
 
@@ -18,15 +20,10 @@ export default function Team() {
   return (
     <section className="bg-background px-[clamp(16px,2.8vw,44px)] pb-[20svh] pt-[8svh]">
       <div className="mx-auto max-w-[1200px]">
-        <motion.h2
-          className="mb-14 max-w-[18ch] text-[clamp(36px,4.8vw,72px)] leading-[1] tracking-[-0.04em]"
-          initial={reduce ? false : { opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.6 }}
-          transition={{ duration: 1, ease: EASE }}
-        >
-          Made by four students who got tired of stepping on gum.
-        </motion.h2>
+        <RevealLines
+          lines={["Made by four students", "who got tired of", "stepping on gum."]}
+          className="mb-14 text-[clamp(36px,4.8vw,72px)] leading-[1] tracking-[-0.04em]"
+        />
         <motion.ul
           className="border-b border-foreground/15"
           initial={reduce ? false : "hidden"}
@@ -39,8 +36,8 @@ export default function Team() {
               key={m.name}
               className="group grid grid-cols-[auto_1fr] items-center gap-x-5 gap-y-1 border-t border-foreground/15 py-6 md:grid-cols-[auto_1fr_auto] md:gap-x-8"
               variants={{
-                hidden: { opacity: 0, y: 40 },
-                show: { opacity: 1, y: 0, transition: { duration: 0.9, ease: EASE } },
+                hidden: { opacity: 0, y: 40, filter: "blur(8px)" },
+                show: { opacity: 1, y: 0, filter: "blur(0px)", transition: { duration: 1, ease: EASE } },
               }}
             >
               <span className="relative block h-14 w-14 overflow-hidden rounded-full bg-secondary md:h-16 md:w-16">

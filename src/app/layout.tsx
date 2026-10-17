@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
+import "lenis/dist/lenis.css";
 import "./globals.css";
+import SmoothScroll from "@/components/SmoothScroll";
 import { Analytics } from '@vercel/analytics/next';
 import { SpeedInsights } from "@vercel/speed-insights/next";
 
@@ -112,10 +114,10 @@ export default function RootLayout({
               },
               {
                 "@type": "Question",
-                "name": "How long would it take to break down?",
+                "name": "What does designed to be safe to swallow mean?",
                 "acceptedAnswer": {
                   "@type": "Answer",
-                  "text": "It is designed to be swallowed, so it never reaches the ground. If it is spat out anyway, our target is for it to break down within about 5 days. We have not reached that yet."
+                  "text": "The spent gum is meant to be digestible and biodegradable, so it never ends up on the ground. These are design goals we are working toward, not proven results."
                 }
               }
             ]
@@ -140,7 +142,14 @@ export default function RootLayout({
         <div id="site-banner" className="bg-secondary px-4 py-2 text-center text-xs font-bold text-foreground sm:text-sm">
           A concept in development. Nothing is for sale.
         </div>
+        <SmoothScroll />
         {children}
+        {/* fine film grain over everything; purely visual */}
+        <div
+          aria-hidden
+          className="pointer-events-none fixed inset-0 z-[60] opacity-[0.07] mix-blend-overlay"
+          style={{ backgroundImage: "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")" }}
+        />
         <Analytics />
         <SpeedInsights />
       </body>

@@ -7,7 +7,6 @@ import { useState, useEffect } from 'react';
 
 // Kept short on purpose: everything else lives in the footer.
 const links = [
-  { href: '/about', label: 'About' },
   { href: '/faq', label: 'FAQ' },
 ];
 
@@ -86,7 +85,7 @@ const Header = () => {
             ))}
           </nav>
           <Link
-            href="/support-interest"
+            href="/get-involved"
             className={`hidden h-10 items-center rounded-lg px-4 text-[15px] font-bold transition-colors md:inline-flex ${
               overHero ? "bg-white text-[#12261d] hover:bg-mint" : "bg-[#12261d] text-white hover:bg-[#1f5133]"
             }`}
@@ -107,7 +106,7 @@ const Header = () => {
             </button>
           </div>
           <nav className="mt-6 flex flex-col gap-1 px-[clamp(16px,2.8vw,44px)]" aria-label="Mobile">
-            {[{ href: '/', label: 'Home' }, ...links, { href: '/support-interest', label: 'Get involved' }].map((l) => (
+            {[{ href: '/', label: 'Home' }, ...links, { href: '/get-involved', label: 'Get involved' }].map((l) => (
               <Link
                 key={l.href}
                 href={l.href}

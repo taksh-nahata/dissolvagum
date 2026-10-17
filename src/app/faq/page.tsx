@@ -1,75 +1,71 @@
-"use client";
-
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { motion } from 'framer-motion';
+import type { Metadata } from "next";
+import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import RevealLines from "@/components/RevealLines";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 
-const faqData = [
-	{
-		question: "What is DissolvaGum?",
-		answer: "DissolvaGum is a startup founded by four high school students in Folsom, California. We are designing a chewing gum that is safe to swallow once you finish chewing, so it never becomes litter.",
-	},
-	{
-		question: "Can I buy it?",
-		answer: "No. DissolvaGum is a concept in early research and development, and nothing is for sale. This site exists to show the idea and to hear from people who are interested.",
-	},
-	{
-		question: "Why not just throw gum away?",
-		answer: "A lot of it ends up on sidewalks instead. Conventional gum base is a plastic-like polymer that does not break down, and even chicle-based gums can take months to years.",
-	},
-	{
-		question: "What does \"designed to be safe to swallow\" mean?",
-		answer: "The spent gum is meant to be digestible and biodegradable. These are design goals we are working toward, not proven results.",
-	},
-	{
-		question: "How can I help?",
-		answer: "Fill in the support interest form, or the business interest form if you represent a company. You can also reach the team through the contact page.",
-	},
+export const metadata: Metadata = {
+  title: "FAQ | DissolvaGum",
+  description: "Answers to common questions about DissolvaGum, a gum concept designed to be safe to swallow.",
+  alternates: { canonical: "https://dissolvagum.com/faq" },
+};
+
+// Only what the home page does not already answer.
+const FAQ: { q: string; a: React.ReactNode }[] = [
+  {
+    q: "Can I buy it?",
+    a: "No. DissolvaGum is a concept in early development, and nothing is for sale.",
+  },
+  {
+    q: "When will it be available?",
+    a: "There is no date yet. We will share news with people who sign up to follow the project.",
+  },
+  {
+    q: "What does “designed to be safe to swallow” mean?",
+    a: "Spent gum is meant to be digestible and biodegradable, so it never needs to be spat out. These are design goals we are working toward, not proven results.",
+  },
+  {
+    q: "Is this a real company?",
+    a: "It is a student startup founded by four high school students in Folsom, California, still at the concept stage.",
+  },
+  {
+    q: "How can I help?",
+    a: (
+      <>
+        Head to{" "}
+        <Link href="/get-involved" className="font-bold text-foreground underline underline-offset-4 hover:text-primary">
+          Get involved
+        </Link>{" "}
+        to support the project, partner as a business, or ask us anything.
+      </>
+    ),
+  },
 ];
 
 export default function FAQPage() {
-	return (
-		<div className="flex flex-col min-h-screen">
-			<Header />
-			<main className="flex-grow container mx-auto px-4 py-12 md:py-20">
-				<motion.h1
-					className="font-glacial-indifference-bold text-4xl md:text-5xl font-bold text-center mb-12 text-gray-800 dark:text-white"
-					initial={{ opacity: 0, y: -20 }}
-					animate={{ opacity: 1, y: 0 }}
-					transition={{ duration: 0.5 }}
-				>
-					Frequently Asked Questions
-				</motion.h1>
-
-				<div className="max-w-3xl mx-auto">
-					<Accordion type="single" collapsible className="w-full space-y-4">
-						{faqData.map((item, index) => (
-							<motion.div
-								key={index}
-								initial={{ opacity: 0, x: -20 }}
-								animate={{ opacity: 1, x: 0 }}
-								transition={{ duration: 0.3, delay: index * 0.1 }}
-							>
-								<AccordionItem
-									value={`item-${index}`}
-									className="border dark:border-gray-700 rounded-lg shadow-sm hover:shadow-md transition-shadow bg-white dark:bg-gray-800"
-								>
-									<AccordionTrigger className="font-glacial-indifference-bold text-lg p-6 text-left text-gray-700 dark:text-gray-200 hover:no-underline">
-										{item.question}
-									</AccordionTrigger>
-									<AccordionContent className="p-6 pt-0 text-gray-600 dark:text-gray-400">
-										{item.answer}
-									</AccordionContent>
-								</AccordionItem>
-							</motion.div>
-						))}
-					</Accordion>
-				</div>
-			</main>
-			<Footer />
-		</div>
-	);
+  return (
+    <>
+      <Header />
+      <main className="mx-auto w-full max-w-[880px] px-[clamp(16px,2.8vw,44px)] pb-[14svh] pt-[10svh]">
+        <RevealLines
+          as="h1"
+          on="mount"
+          lines={["Questions."]}
+          className="mb-12 text-[clamp(48px,8vw,112px)] leading-[0.95] tracking-[-0.045em]"
+        />
+        <Accordion type="single" collapsible className="border-b border-foreground/15">
+          {FAQ.map((item, i) => (
+            <AccordionItem key={i} value={`q${i}`} className="border-t border-foreground/15">
+              <AccordionTrigger className="py-6 text-left text-[clamp(20px,2.4vw,28px)] font-bold tracking-[-0.02em] hover:no-underline">
+                {item.q}
+              </AccordionTrigger>
+              <AccordionContent className="pb-6 text-lg leading-[1.6] text-ink-2">{item.a}</AccordionContent>
+            </AccordionItem>
+          ))}
+        </Accordion>
+      </main>
+      <Footer />
+    </>
+  );
 }
-
-// Ensure font-glacial-indifference-bold is defined in your globals.css or tailwind.config.js

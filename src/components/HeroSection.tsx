@@ -105,7 +105,7 @@ const HeroSection = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1, ease: EASE, delay: 0.9 }}
             >
-              <CtaLink href="/support-interest" variant="light">Follow the project</CtaLink>
+              <CtaLink href="/get-involved" variant="light">Follow the project</CtaLink>
               <CtaLink href="#how" variant="text-light">See how it works</CtaLink>
             </motion.div>
           </motion.div>

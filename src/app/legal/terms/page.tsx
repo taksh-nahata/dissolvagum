@@ -1,4 +1,5 @@
 import LegalPageLayout from "@/components/LegalPageLayout";
+export { metadata } from "./metadata";
 
 const TermsPage = () => {
   return (

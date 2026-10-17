@@ -4,15 +4,11 @@ export async function GET() {
   const baseUrl = 'https://dissolvagum.com';
   const staticPages = [
     '',
-    '/about',
     '/faq',
-    '/contact',
-    '/how-it-works',
     '/legal/terms',
     '/legal/privacy',
     '/legal/accessibility',
-    '/business-interest',
-    '/support-interest'
+    '/get-involved'
   ];
 
   const urls = staticPages.map(

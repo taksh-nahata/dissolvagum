@@ -29,7 +29,7 @@ export default function FollowCta() {
             If you want to see where this goes, or help it get there, let us know.
           </p>
           <div className="flex flex-wrap items-center gap-x-6 gap-y-3">
-            <CtaLink href="/support-interest" variant="light">Get involved</CtaLink>
+            <CtaLink href="/get-involved" variant="light">Get involved</CtaLink>
             <a
               href="https://forms.gle/XshZmHL6ix4sesuE9"
               target="_blank"

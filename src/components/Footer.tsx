@@ -2,12 +2,8 @@ import Link from 'next/link';
 import { Instagram } from 'lucide-react';
 
 const LINKS = [
-  { href: '/how-it-works', label: 'How it works' },
-  { href: '/about', label: 'About' },
   { href: '/faq', label: 'FAQ' },
-  { href: '/contact', label: 'Contact' },
-  { href: '/support-interest', label: 'Support' },
-  { href: '/business-interest', label: 'Business' },
+  { href: '/get-involved', label: 'Get involved' },
   { href: '/legal/privacy', label: 'Privacy' },
   { href: '/legal/terms', label: 'Terms' },
   { href: '/legal/accessibility', label: 'Accessibility' },

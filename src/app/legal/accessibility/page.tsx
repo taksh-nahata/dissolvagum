@@ -1,4 +1,5 @@
 import LegalPageLayout from "@/components/LegalPageLayout";
+export { metadata } from "./metadata";
 
 const AccessibilityStatementPage = () => {
   return (
@@ -38,8 +39,8 @@ const AccessibilityStatementPage = () => {
         <p>Despite our best efforts to ensure accessibility of DissolvaGum Website, there may be some limitations. Below is a description of known limitations, and potential solutions. Please contact us if you observe an issue not listed below.</p>
         <p>Known limitations for DissolvaGum Website:</p>
         <ul>
-          <li><strong>3D Product Viewer:</strong> The interactive 3D product viewer on product pages may not be fully accessible to screen reader users or those who rely on keyboard navigation. We are working to provide alternative image galleries and detailed descriptions for all products. Please contact us if you need assistance.</li>
-          <li><strong>Complex Animations:</strong> Some animations, while designed to be decorative, might be distracting for some users. We are working on providing mechanisms to pause or disable non-essential animations.</li>
+          <li><strong>3D scenes:</strong> The home page uses 3D scenes to illustrate the idea. Each one has a text description for screen readers, and every point it makes is also written out on the page.</li>
+          <li><strong>Animation:</strong> If your device is set to reduce motion, the site turns off smooth scrolling and scroll-driven animation and shows still versions instead.</li>
         </ul>
 
         <h2>Assessment Approach</h2>

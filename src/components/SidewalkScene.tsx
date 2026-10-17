@@ -28,8 +28,9 @@ function wadGeometry() {
   const d = new THREE.Vector3();
   for (let i = 0; i < n; i++) {
     d.fromBufferAttribute(pos, i).normalize();
-    // wad: lumpy, with chew creases
-    const r = 0.3 * (1 + 0.22 * fbm(d.x * 1.8, d.y * 1.8, d.z * 1.8) + 0.07 * fbm(d.x * 5, d.y * 5, d.z * 5) + 0.04 * Math.abs(fbm(d.x * 11, d.y * 11, d.z * 11, 3)));
+    // wad: a soft, rounded lump with a few gentle folds (chewed gum is smooth, not knobbly)
+    const fold = Math.pow(Math.abs(Math.sin(d.x * 3.1 + d.y * 4.3 + fbm(d.x, d.y, d.z, 2) * 2)), 6);
+    const r = 0.3 * (1 + 0.15 * fbm(d.x * 1.4, d.y * 1.4, d.z * 1.4, 3) + 0.02 * fbm(d.x * 4, d.y * 4, d.z * 4, 2) - 0.035 * fold);
     wad[i * 3] = d.x * r * 1.12;
     wad[i * 3 + 1] = d.y * r * 0.86 + 0.27;
     wad[i * 3 + 2] = d.z * r;
@@ -66,9 +67,9 @@ function gumMaterial(color: string, grit: THREE.Texture) {
   };
   const mat = new THREE.MeshPhysicalMaterial({
     color,
-    roughness: 0.32,
-    clearcoat: 0.6,
-    clearcoatRoughness: 0.3,
+    roughness: 0.42,
+    clearcoat: 0.35,
+    clearcoatRoughness: 0.35,
     sheen: 0.3,
     sheenColor: new THREE.Color("#ffffff"),
     envMapIntensity: 0.9,
@@ -184,7 +185,7 @@ export default function SidewalkScene({
     // the gum
     const grit = gritTexture();
     const { geo, flat } = wadGeometry();
-    const fresh = new THREE.Color("#ecc9d0");
+    const fresh = new THREE.Color("#f0dade");
     const aged = new THREE.Color("#1c1917");
     const { mat, uniforms } = gumMaterial(`#${fresh.getHexString()}`, grit);
     const gum = new THREE.Mesh(geo, mat);
@@ -257,8 +258,8 @@ export default function SidewalkScene({
       // time passing
       mat.color.copy(fresh).lerp(aged, smooth(age));
       uniforms.uAge.value = smooth(clamp01(age * 1.3));
-      mat.roughness = 0.32 + 0.63 * age;
-      mat.clearcoat = 0.6 * (1 - age);
+      mat.roughness = 0.42 + 0.53 * age;
+      mat.clearcoat = 0.35 * (1 - age);
       mat.sheen = 0.3 * (1 - age);
 
       for (let i = 0; i < SPOTS; i++) {

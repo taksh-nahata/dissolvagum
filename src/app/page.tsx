@@ -1,4 +1,5 @@
 import Header from "@/components/Header";
+import IntroLoader from "@/components/IntroLoader";
 import Footer from "@/components/Footer";
 import HeroSection from "@/components/HeroSection";
 import Manifesto from "@/components/home/Manifesto";
@@ -10,6 +11,8 @@ import FollowCta from "@/components/home/FollowCta";
 export default function HomePage() {
   return (
     <>
+      {/* first, so the hero knows to wait for it */}
+      <IntroLoader />
       <Header />
       <main className="flex flex-col">
         <HeroSection />

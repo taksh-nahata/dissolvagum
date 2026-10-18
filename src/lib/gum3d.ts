@@ -124,6 +124,26 @@ export function makeRenderer(host: HTMLElement) {
   return renderer;
 }
 
+/** Compiles every shader and uploads every texture up front, so the first animated frames don't hitch.
+    Resolves after one real frame has been drawn. */
+export async function warmUp(renderer: THREE.WebGLRenderer, scene: THREE.Scene, camera: THREE.Camera, extra: unknown[] = []) {
+  scene.traverse((o) => {
+    const mats = (o as THREE.Mesh).material;
+    if (!mats) return;
+    (Array.isArray(mats) ? mats : [mats]).forEach((m) =>
+      Object.values(m).forEach((v) => v instanceof THREE.Texture && renderer.initTexture(v))
+    );
+  });
+  extra.forEach((v) => v instanceof THREE.Texture && renderer.initTexture(v));
+  try {
+    await renderer.compileAsync(scene, camera);
+  } catch {
+    renderer.compile(scene, camera);
+  }
+  renderer.render(scene, camera);
+  await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
+}
+
 /** Runs `draw(seconds)` every frame while `host` is on screen. Returns a stop function. */
 export function runWhileVisible(host: HTMLElement, draw: (t: number) => void) {
   let raf = 0, on = true;

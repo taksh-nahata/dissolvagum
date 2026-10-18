@@ -6,13 +6,14 @@ import { motion, useMotionTemplate, useMotionValueEvent, useReducedMotion, useSc
 import CtaLink from "@/components/CtaLink";
 import Pavement from "@/components/Pavement";
 import RevealLines, { EASE } from "@/components/RevealLines";
+import { useIntroStarted } from "@/lib/ready";
 
 // three.js only loads in the browser, after the page has rendered.
 const GumScene = dynamic(() => import("@/components/GumScene"), { ssr: false });
 
 /* Pinned street. Scroll timeline (0 to 1):
    0.12-0.38  the intro lifts away and blurs out
-   0.30-0.55  "Every one of those spots is old gum."
+   0.30-0.57  "Every one of those spots is old gum."
    0.36-0.90  the gum on the street dissolves (in Pavement)
    0.60-0.90  "Ours is designed to leave nothing behind."
    0.86-1     the whole stage shrinks into a rounded card as the next section arrives */
@@ -20,6 +21,7 @@ const HeroSection = () => {
   const outer = useRef<HTMLElement>(null);
   const progress = useRef(0);
   const reduce = useReducedMotion() ?? false;
+  const go = useIntroStarted(); // the intro waits for the loading screen to lift
 
   const { scrollYProgress: p } = useScroll({ target: outer, offset: ["start start", "end end"] });
   useMotionValueEvent(p, "change", (v) => {
@@ -31,11 +33,11 @@ const HeroSection = () => {
   const introOpacity = useTransform(p, [0.14, 0.36], [1, 0]);
   const introFilter = useMotionTemplate`blur(${introBlur}px)`;
 
-  const aOpacity = useTransform(p, [0.3, 0.38, 0.48, 0.55], [0, 1, 1, 0]);
-  const aBlur = useTransform(p, [0.3, 0.38, 0.48, 0.55], [12, 0, 0, 12]);
-  const aY = useTransform(p, [0.3, 0.55], [40, -40]);
-  const bOpacity = useTransform(p, [0.6, 0.7], [0, 1]);
-  const bBlur = useTransform(p, [0.6, 0.7], [12, 0]);
+  const aOpacity = useTransform(p, [0.3, 0.36, 0.52, 0.57], [0, 1, 1, 0]);
+  const aBlur = useTransform(p, [0.3, 0.36, 0.52, 0.57], [12, 0, 0, 12]);
+  const aY = useTransform(p, [0.3, 0.57], [30, -30]);
+  const bOpacity = useTransform(p, [0.6, 0.66], [0, 1]);
+  const bBlur = useTransform(p, [0.6, 0.66], [12, 0]);
   const bY = useTransform(p, [0.6, 0.9], [40, 0]);
   const aFilter = useMotionTemplate`blur(${aBlur}px)`;
   const bFilter = useMotionTemplate`blur(${bBlur}px)`;
@@ -52,7 +54,7 @@ const HeroSection = () => {
       id="story"
       ref={outer}
       className="relative bg-[#0e1a17]"
-      style={{ height: reduce ? "100svh" : "300svh" }}
+      style={{ height: reduce ? "100svh" : "460svh" }}
       aria-label="DissolvaGum introduction"
     >
       <motion.div
@@ -77,15 +79,16 @@ const HeroSection = () => {
             <motion.p
               className="text-sm font-bold text-[#b4c9bb]"
               initial={reduce ? false : { opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.9, ease: EASE, delay: 0.1 }}
+              animate={go ? { opacity: 1, y: 0 } : undefined}
+              transition={{ duration: 0.9, ease: EASE, delay: 0.25 }}
             >
               A concept from Folsom, California
             </motion.p>
             <RevealLines
               as="h1"
               on="mount"
-              delay={0.2}
+              play={go}
+              delay={0.35}
               lines={["Stop", "chewing", "plastic."]}
               className="text-[clamp(56px,9.5vw,148px)] uppercase leading-[0.86] tracking-[-0.045em]"
               lineClassName={(i) => (i === 2 ? "text-mint" : "")}
@@ -93,8 +96,8 @@ const HeroSection = () => {
             <motion.p
               className="max-w-[40ch] text-lg leading-[1.5] text-[#c9d6ce] md:text-xl"
               initial={reduce ? false : { opacity: 0, y: 16, filter: "blur(6px)" }}
-              animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-              transition={{ duration: 1, ease: EASE, delay: 0.75 }}
+              animate={go ? { opacity: 1, y: 0, filter: "blur(0px)" } : undefined}
+              transition={{ duration: 1, ease: EASE, delay: 0.9 }}
             >
               <strong className="text-white">Chew some gum. Skip the mess.</strong> Four high school students are designing
               a gum that is safe to swallow, so it never ends up on the sidewalk.
@@ -102,8 +105,8 @@ const HeroSection = () => {
             <motion.div
               className="flex flex-wrap items-center gap-x-6 gap-y-1"
               initial={reduce ? false : { opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1, ease: EASE, delay: 0.9 }}
+              animate={go ? { opacity: 1, y: 0 } : undefined}
+              transition={{ duration: 1, ease: EASE, delay: 1.05 }}
             >
               <CtaLink href="/get-involved" variant="light">Follow the project</CtaLink>
               <CtaLink href="#how" variant="text-light">See how it works</CtaLink>

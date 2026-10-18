@@ -3,7 +3,8 @@
 import { useEffect, useRef, type MutableRefObject } from "react";
 import * as THREE from "three";
 import { RoundedBoxGeometry } from "three/examples/jsm/geometries/RoundedBoxGeometry.js";
-import { fbm, makeRenderer, runWhileVisible, studioEnvironment } from "@/lib/gum3d";
+import { fbm, makeRenderer, runWhileVisible, studioEnvironment, warmUp } from "@/lib/gum3d";
+import { introPhase, loadFonts, markReady } from "@/lib/ready";
 
 /* Hero object: the DissolvaGum pack, drawn from the real packaging (green over navy-green,
    diagonal split, wordmark, "CHEW SOME GUM / SKIP THE MESS", ring, mountain line art, 15 STICKS).
@@ -185,13 +186,26 @@ export default function GumScene({
   const hostRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    // the artwork is drawn in the page font, so wait for it rather than redrawing mid-animation
+    let cancelled = false;
+    let teardown = () => {};
+    loadFonts().then(() => {
+      if (!cancelled) teardown = setup();
+    });
+    return () => {
+      cancelled = true;
+      teardown();
+    };
+
+  function setup() {
     const host = hostRef.current;
-    if (!host) return;
+    if (!host) return () => {};
     let renderer: THREE.WebGLRenderer;
     try {
       renderer = makeRenderer(host);
     } catch {
-      return; // the street still reads fine without the 3D layer
+      markReady("hero3d");
+      return () => {}; // the street still reads fine without the 3D layer
     }
 
     const scene = new THREE.Scene();
@@ -290,20 +304,6 @@ export default function GumScene({
 
     scene.add(pack);
 
-    // the artwork uses the page font: redraw once it has loaded
-    document.fonts?.ready.then(() => {
-      const f = split(drawFront());
-      (body.material as THREE.MeshPhysicalMaterial[])[4].map = f.body;
-      (lid.material as THREE.MeshPhysicalMaterial[])[4].map = f.lid;
-      (body.material as THREE.MeshPhysicalMaterial[])[4].needsUpdate = true;
-      (lid.material as THREE.MeshPhysicalMaterial[])[4].needsUpdate = true;
-      front.body.dispose(); front.lid.dispose();
-      inner.map?.dispose();
-      inner.map = keep(innerLidTexture());
-      inner.needsUpdate = true;
-      keep(f.body); keep(f.lid);
-    });
-
     let px = 0, py = 0, cx = 0, cy = 0;
     const onMove = (e: PointerEvent) => {
       px = e.clientX / window.innerWidth - 0.5;
@@ -320,9 +320,12 @@ export default function GumScene({
       camera.updateProjectionMatrix();
     };
 
+    // the load choreography starts when the loading screen lifts, not when the scene is built
+    let start = -1;
     const draw = (time: number) => {
+      if (start < 0 && introPhase() === "started") start = time;
       const p = still ? 0 : progressRef.current;
-      const T = still ? 10 : time;
+      const T = still ? 10 : start < 0 ? 0 : time - start;
       const rise = easeOut(clamp01(T / 1.3));
       const open = easeOutBack(clamp01((T - 0.9) / 0.9));
       const lift = easeOut(clamp01((T - 1.6) / 1.2));
@@ -344,6 +347,8 @@ export default function GumScene({
     };
 
     resize();
+    // compile shaders and upload textures now, behind the loading screen, not on the first animated frame
+    warmUp(renderer, scene, camera, disposables).finally(() => markReady("hero3d"));
     const ro = new ResizeObserver(() => { resize(); if (still) draw(0); });
     ro.observe(host);
     const stop = still ? (draw(0), () => {}) : runWhileVisible(host, draw);
@@ -357,6 +362,7 @@ export default function GumScene({
       renderer.dispose();
       renderer.domElement.remove();
     };
+  }
   }, [progressRef, still]);
 
   return <div ref={hostRef} className="absolute inset-0" role="img" aria-label={label} />;

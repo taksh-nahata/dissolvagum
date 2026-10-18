@@ -105,7 +105,7 @@ export default function Swallow() {
   const line = { fill: "none", stroke: "url(#lineFade)", strokeWidth: 3, strokeLinecap: "round" as const, strokeLinejoin: "round" as const };
 
   return (
-    <section ref={outer} id="how" className="relative bg-[#0e1a17]" style={{ height: reduce ? "auto" : "400svh" }} aria-label="How DissolvaGum is designed to work">
+    <section ref={outer} id="how" className="relative bg-[#0e1a17]" style={{ height: reduce ? "auto" : "600svh" }} aria-label="How DissolvaGum is designed to work">
       <motion.div
         className={`${reduce ? "relative min-h-[100svh]" : "sticky top-0 h-[100svh]"} overflow-hidden bg-[#0e1a17] text-[#e8f3ec] will-change-transform`}
         style={reduce ? undefined : { scale, borderRadius: radius }}

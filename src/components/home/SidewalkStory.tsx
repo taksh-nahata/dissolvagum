@@ -70,7 +70,7 @@ export default function SidewalkStory() {
     <section
       ref={outer}
       className="relative bg-[#0e1a17]"
-      style={{ height: reduce ? "auto" : "480svh" }}
+      style={{ height: reduce ? "auto" : "700svh" }}
       aria-label="The problem"
     >
       <motion.div

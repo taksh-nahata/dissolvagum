@@ -3,7 +3,8 @@
 import { useEffect, useRef, type MutableRefObject } from "react";
 import * as THREE from "three";
 import { mergeVertices } from "three/examples/jsm/utils/BufferGeometryUtils.js";
-import { concreteTexture, fbm, gritTexture, makeRenderer, runWhileVisible, studioEnvironment } from "@/lib/gum3d";
+import { concreteTexture, fbm, gritTexture, makeRenderer, runWhileVisible, studioEnvironment, warmUp } from "@/lib/gum3d";
+import { markReady } from "@/lib/ready";
 import { TIMELINE } from "@/lib/sidewalkTimeline";
 
 /* A chewed wad of gum is spat onto a sidewalk, lands, and gets stepped on. Then time passes.
@@ -150,6 +151,7 @@ export default function SidewalkScene({
     try {
       renderer = makeRenderer(host);
     } catch {
+      markReady("street3d");
       return;
     }
     renderer.shadowMap.enabled = true;
@@ -283,6 +285,9 @@ export default function SidewalkScene({
     };
 
     resize();
+    // build the shadow map and compile shaders behind the loading screen
+    draw(0);
+    warmUp(renderer, scene, camera).finally(() => markReady("street3d"));
     const ro = new ResizeObserver(() => { resize(); if (still) draw(0); });
     ro.observe(host);
     const stop = still ? (draw(0), () => {}) : runWhileVisible(host, draw);

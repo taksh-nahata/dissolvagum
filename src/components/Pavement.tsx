@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, type MutableRefObject } from "react";
+import { markReady } from "@/lib/ready";
 
 /* A dark street covered in old gum. As `progressRef` (0 to 1) rises, the gum
    dissolves away from right to left, leaving clean asphalt. */
@@ -13,6 +14,27 @@ const smooth = (a: number, b: number, x: number) => {
   const t = clamp01((x - a) / (b - a));
   return t * t * (3 - 2 * t);
 };
+
+/** A square of asphalt grain at device resolution; tiled, its repeat is invisible at this scale. */
+let tileCache: { dpr: number; c: HTMLCanvasElement } | null = null;
+function stoneTile(dpr: number) {
+  if (tileCache?.dpr === dpr) return tileCache.c;
+  const S = 384;
+  const c = document.createElement("canvas");
+  c.width = c.height = Math.round(S * dpr);
+  const g = c.getContext("2d")!;
+  g.scale(dpr, dpr);
+  for (let i = 0; i < (S * S) / 9; i++) {
+    const v = Math.random();
+    g.fillStyle = v > 0.55
+      ? `rgba(${170 + Math.random() * 60},${165 + Math.random() * 55},${150 + Math.random() * 50},${0.06 + Math.random() * 0.22})`
+      : `rgba(0,0,0,${0.15 + Math.random() * 0.35})`;
+    const s = Math.random() > 0.93 ? 2.2 : Math.random() > 0.6 ? 1.3 : 0.8;
+    g.fillRect(Math.random() * S, Math.random() * S, s, s);
+  }
+  tileCache = { dpr, c };
+  return c;
+}
 
 type Spot = { x: number; y: number; r: number; color: string; t: number; pts: [number, number][] };
 
@@ -60,15 +82,12 @@ export default function Pavement({
         g.fillStyle = grad;
         g.fillRect(x - r, y - r, r * 2, r * 2);
       }
-      const stones = Math.floor((w * h) / 9);
-      for (let i = 0; i < stones; i++) {
-        const v = Math.random();
-        g.fillStyle = v > 0.55
-          ? `rgba(${170 + Math.random() * 60},${165 + Math.random() * 55},${150 + Math.random() * 50},${0.06 + Math.random() * 0.22})`
-          : `rgba(0,0,0,${0.15 + Math.random() * 0.35})`;
-        const s = Math.random() > 0.93 ? 2.2 : Math.random() > 0.6 ? 1.3 : 0.8;
-        g.fillRect(Math.random() * w, Math.random() * h, s, s);
-      }
+      // stone aggregate: painted once on a tile and repeated, instead of hundreds of thousands of specks
+      g.fillStyle = g.createPattern(stoneTile(dpr), "repeat")!;
+      g.save();
+      g.scale(1 / dpr, 1 / dpr);
+      g.fillRect(0, 0, w * dpr, h * dpr);
+      g.restore();
       concrete = c;
 
       // Gum: flat, irregular blobs, a bit denser on the right and in trails.
@@ -136,7 +155,13 @@ export default function Pavement({
 
     build();
     draw();
-    const ro = new ResizeObserver(() => { build(); draw(); });
+    markReady("pavement");
+    // only repaint when the size really changes (the observer also fires once on start)
+    const ro = new ResizeObserver(() => {
+      if (Math.abs(canvas.clientWidth - w) < 1 && Math.abs(canvas.clientHeight - h) < 1) return;
+      build();
+      draw();
+    });
     ro.observe(canvas);
     let raf = 0;
     if (!still) {

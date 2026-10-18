@@ -13,6 +13,7 @@ export default function RevealLines({
   lineClassName,
   on = "view",
   delay = 0,
+  play = true,
 }: {
   lines: string[];
   as?: "h1" | "h2" | "h3" | "p";
@@ -20,12 +21,14 @@ export default function RevealLines({
   lineClassName?: (i: number) => string;
   on?: "view" | "mount";
   delay?: number;
+  /** For `on="mount"`: hold the reveal until this turns true. */
+  play?: boolean;
 }) {
   const reduce = useReducedMotion();
   const Tag = motion[as];
   const trigger = on === "view"
     ? { whileInView: "show", viewport: { once: true, amount: 0.5 } }
-    : { animate: "show" };
+    : { animate: play ? "show" : "hidden" };
   return (
     <Tag
       className={className}

@@ -54,6 +54,10 @@ export default function RootLayout({
         <link rel="shortcut icon" href="/image-removebg-preview%20(12).png" type="image/png" />
         <link rel="apple-touch-icon" href="/image-removebg-preview%20(12).png" />
         
+        {/* The page font, fetched early so the intro never waits on it */}
+        <link rel="preload" href="/fonts/GlacialIndifference-Regular.otf" as="font" type="font/otf" crossOrigin="anonymous" />
+        <link rel="preload" href="/fonts/GlacialIndifference-Bold.otf" as="font" type="font/otf" crossOrigin="anonymous" />
+
         {/* Meta Tags */}
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="author" content="DissolvaGum" />

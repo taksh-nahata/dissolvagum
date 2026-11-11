@@ -7,11 +7,11 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 
 export const metadata: Metadata = {
   title: "DissolvaGum | Chew some gum. Skip the mess.",
-  description: "DissolvaGum is a startup founded by four high school students in Folsom, California, designing a chewing gum that is safe to swallow. In development.",
+  description: "DissolvaGum is a startup founded by four high school students in Folsom, California, developing a chewing gum designed to be safe to swallow. In development.",
   keywords: ["dissolvagum", "dissolva gum", "DissolvaGum Folsom", "swallowable gum", "gum alternative", "litter-free gum", "student startup", "Folsom California"],
   openGraph: {
     title: "DissolvaGum | Chew some gum. Skip the mess.",
-    description: "Four high school students in Folsom, California are designing a gum that is safe to swallow. In development.",
+    description: "Four high school students in Folsom, California are developing a gum designed to be safe to swallow. In development.",
     type: "website",
     images: [
       {
@@ -89,7 +89,16 @@ export default function RootLayout({
             "name": "DissolvaGum",
             "url": "https://dissolvagum.com",
             "logo": "https://dissolvagum.com/og-image.png",
-            "description": "A startup founded by four high school students in Folsom, California, designing a chewing gum that is safe to swallow.",
+            "description": "A startup founded by four high school students in Folsom, California, developing a chewing gum designed to be safe to swallow.",
+            "foundingLocation": { "@type": "Place", "name": "Folsom, California" },
+            "slogan": "Chew some gum. Skip the mess.",
+            "email": "team@dissolvagum.com",
+            "founder": [
+              { "@type": "Person", "name": "Taksh Nahata", "jobTitle": "CEO" },
+              { "@type": "Person", "name": "Tarakesvaran Aravindaan", "jobTitle": "Product Manager" },
+              { "@type": "Person", "name": "Chanakya Mudhuganti", "jobTitle": "Chief Financial Officer" },
+              { "@type": "Person", "name": "Shivam Sharma", "jobTitle": "Chief Marketing Officer" }
+            ],
             "sameAs": [
               "https://www.instagram.com/dissolvagum/"
             ],
@@ -99,36 +108,6 @@ export default function RootLayout({
               "addressRegion": "CA",
               "addressCountry": "US"
             }
-          },
-          {
-            "@context": "https://schema.org",
-            "@type": "FAQPage",
-            "mainEntity": [
-              {
-                "@type": "Question",
-                "name": "What is DissolvaGum?",
-                "acceptedAnswer": {
-                  "@type": "Answer",
-                  "text": "DissolvaGum is a student startup in Folsom, California, designing a chewing gum that is safe to swallow once you finish chewing, so it never becomes litter."
-                }
-              },
-              {
-                "@type": "Question",
-                "name": "Can I buy DissolvaGum yet?",
-                "acceptedAnswer": {
-                  "@type": "Answer",
-                  "text": "Not yet. DissolvaGum is in early research and development, and its design goals have not been met yet."
-                }
-              },
-              {
-                "@type": "Question",
-                "name": "What does designed to be safe to swallow mean?",
-                "acceptedAnswer": {
-                  "@type": "Answer",
-                  "text": "The spent gum is meant to be digestible and biodegradable, so it never ends up on the ground. These are design goals we are working toward, not proven results."
-                }
-              }
-            ]
           }
         ])}} />
 

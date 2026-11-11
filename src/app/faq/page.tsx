@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 };
 
 // Only what the home page does not already answer.
-const FAQ: { q: string; a: React.ReactNode }[] = [
+const FAQ: { q: string; a: React.ReactNode; text?: string }[] = [
   {
     q: "Can I buy it?",
     a: "No. DissolvaGum is a concept in early development, and nothing is for sale.",
@@ -31,6 +31,7 @@ const FAQ: { q: string; a: React.ReactNode }[] = [
   },
   {
     q: "How can I help?",
+    text: "Visit dissolvagum.com/get-involved to support the project, partner as a business, or ask the team anything.",
     a: (
       <>
         Head to{" "}
@@ -43,9 +44,21 @@ const FAQ: { q: string; a: React.ReactNode }[] = [
   },
 ];
 
+// The same questions as structured data, so search and AI answers can quote them directly.
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: FAQ.map((f) => ({
+    "@type": "Question",
+    name: f.q,
+    acceptedAnswer: { "@type": "Answer", text: f.text ?? f.a },
+  })),
+};
+
 export default function FAQPage() {
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       <Header />
       <main className="mx-auto w-full max-w-[880px] px-[clamp(16px,2.8vw,44px)] pb-[14svh] pt-[10svh]">
         <RevealLines

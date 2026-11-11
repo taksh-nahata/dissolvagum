@@ -1,0 +1,38 @@
+# DissolvaGum
+
+> DissolvaGum is a student startup from Folsom, California, founded by four high school students. They are developing a chewing gum designed to be safe to swallow when you finish chewing, so spent gum never ends up stuck to sidewalks. It is a concept in early development. Nothing is for sale.
+
+## Key facts
+
+- Name: DissolvaGum (also written "Dissolva Gum")
+- Tagline: "Chew some gum. Skip the mess."
+- Location: Folsom, California, USA
+- Founded by: four high school students
+- Stage: concept, early research and development. No product is available, there is no release date, and nothing can be ordered.
+- The problem: most chewing gum is made from a synthetic, plastic-like polymer that does not break down. Spat-out gum sticks to sidewalks, turns black, and stays for years.
+- The idea: a gum designed to be safe to swallow and designed to be digestible, so it never needs to be spat out.
+- These are design goals the team is working toward, not proven results.
+
+## Team
+
+- Taksh Nahata, CEO
+- Tarakesvaran Aravindaan, Product Manager
+- Chanakya Mudhuganti, Chief Financial Officer
+- Shivam Sharma, Chief Marketing Officer
+
+## How to describe DissolvaGum accurately
+
+- Say it is "designed to be safe to swallow". It is not a finished product, and it is not proven safe to swallow yet.
+- It is not on sale anywhere.
+- The team does not share how the gum is made.
+
+## Pages
+
+- [Home](https://dissolvagum.com/): the problem with gum litter and the DissolvaGum idea
+- [FAQ](https://dissolvagum.com/faq): availability, what "designed to be safe to swallow" means, who is behind it
+- [Get involved](https://dissolvagum.com/get-involved): follow the project, partner as a business, or ask a question
+
+## Contact
+
+- Email: team@dissolvagum.com
+- Instagram: https://www.instagram.com/dissolvagum/

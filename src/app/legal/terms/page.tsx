@@ -4,7 +4,7 @@ export { metadata } from "./metadata";
 const TermsPage = () => {
   return (
     <LegalPageLayout title="Terms & Conditions">
-      <p><strong>Important:</strong> DissolvaGum is a hypothetical concept and not a real product or business. This website is for demonstration and awareness purposes only. No products or services are being offered or sold.</p>
+      <p><strong>Important:</strong> DissolvaGum is a concept in development by a student startup. It is not a product, and nothing is for sale.</p>
       <p>Welcome to DissolvaGum! These terms and conditions outline the rules and regulations for the use of DissolvaGum's Website, located at dissolvagum.com.</p>
       <p>By accessing this website, you accept these terms and conditions. Do not continue to use DissolvaGum if you do not agree to all of the terms and conditions stated on this page.</p>
 
@@ -35,7 +35,7 @@ const TermsPage = () => {
       <p>We reserve the right to request that you remove all links or any particular link to our Website. You agree to immediately remove all links to our Website upon request. We also reserve the right to amend these terms and conditions and its linking policy at any time. By continuously linking to our Website, you agree to be bound to and follow these linking terms and conditions.</p>
 
       <h2>Disclaimer</h2>
-      <p><strong>Hypothetical Product Notice:</strong> DissolvaGum is not a real product or business. All information on this website is for demonstration and awareness only. No actual goods or services are being provided, and nothing on this site constitutes a real offer or contract.</p>
+      <p><strong>Concept notice:</strong> DissolvaGum is a concept in development, not a product. No goods or services are being sold, and nothing on this site is an offer or contract. Everything described here is a design goal, not a proven result.</p>
       <p>To the maximum extent permitted by applicable law, we exclude all representations, warranties, and conditions relating to our website and the use of this website. Nothing in this disclaimer will limit or exclude our or your liability for death or personal injury, limit or exclude our or your liability for fraud or fraudulent misrepresentation, limit any of our or your liabilities in any way that is not permitted under applicable law, or exclude any of our or your liabilities that may not be excluded under applicable law.</p>
       <p>The limitations and prohibitions of liability set in this Section and elsewhere in this disclaimer: (a) are subject to the preceding paragraph; and (b) govern all liabilities arising under the disclaimer, including liabilities arising in contract, in tort, and for breach of statutory duty.</p>
       <p>As long as the website and the information and services on the website are provided free of charge, we will not be liable for any loss or damage of any nature.</p>

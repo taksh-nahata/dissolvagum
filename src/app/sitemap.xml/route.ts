@@ -11,8 +11,9 @@ export async function GET() {
     '/get-involved'
   ];
 
+  const lastmod = new Date().toISOString().slice(0, 10);
   const urls = staticPages.map(
-    (page) => `  <url>\n    <loc>${baseUrl}${page}</loc>\n    <changefreq>monthly</changefreq>\n    <priority>0.7</priority>\n  </url>`
+    (page) => `  <url>\n    <loc>${baseUrl}${page || '/'}</loc>\n    <lastmod>${lastmod}</lastmod>\n    <changefreq>monthly</changefreq>\n    <priority>${page ? '0.6' : '1.0'}</priority>\n  </url>`
   ).join('\n');
 
   const sitemap = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>`;

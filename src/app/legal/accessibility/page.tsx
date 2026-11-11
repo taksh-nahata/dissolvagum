@@ -5,7 +5,7 @@ const AccessibilityStatementPage = () => {
   return (
     <>
       <LegalPageLayout title="Accessibility Statement">
-        <p><strong>Important:</strong> DissolvaGum is a hypothetical concept and not a real product or business. This website is for demonstration and awareness purposes only.</p>
+        <p><strong>Important:</strong> DissolvaGum is a concept in development by a student startup. It is not a product, and nothing is for sale.</p>
         <p>DissolvaGum is committed to ensuring digital accessibility for people with disabilities. We are continually improving the user experience for everyone and applying the relevant accessibility standards.</p>
 
         <h2>Measures to Support Accessibility</h2>

@@ -4,7 +4,7 @@ export { metadata } from "./metadata";
 const PrivacyPage = () => {
   return (
     <LegalPageLayout title="Privacy Policy">
-      <p><strong>Important:</strong> DissolvaGum is a hypothetical concept and not a real product or business. This website is for demonstration and awareness purposes only. No real personal data is being collected or processed.</p>
+      <p><strong>Important:</strong> DissolvaGum is a concept in development by a student startup. It is not a product, and nothing is for sale. We only collect what you choose to send us through our forms.</p>
 
       <p>Your privacy is important to us. It is DissolvaGum's policy to respect your privacy regarding any information we may collect from you across our website, dissolvagum.com, and other sites we own and operate.</p>
 
@@ -42,7 +42,6 @@ const PrivacyPage = () => {
 
       <h2>8. Contact Us</h2>
       <p>If you have any questions about this Privacy Policy or our data practices, please contact us at <a href="mailto:team@dissolvagum.com">team@dissolvagum.com</a>.</p>
-      <p><strong>Note:</strong> As this is a hypothetical concept, any forms or data collection on this site are for demonstration only and do not result in actual data processing.</p>
     </LegalPageLayout>
   );
 };

@@ -8,12 +8,11 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 export const metadata: Metadata = {
   title: "DissolvaGum | Chew some gum. Skip the mess.",
   description: "DissolvaGum is a startup founded by four high school students in Folsom, California, designing a chewing gum that is safe to swallow. In development.",
-  keywords: ["dissolvagum", "dissolva gum", "swallowable gum", "gum alternative", "litter-free gum", "student startup", "Folsom California"],
+  keywords: ["dissolvagum", "dissolva gum", "DissolvaGum Folsom", "swallowable gum", "gum alternative", "litter-free gum", "student startup", "Folsom California"],
   openGraph: {
     title: "DissolvaGum | Chew some gum. Skip the mess.",
     description: "Four high school students in Folsom, California are designing a gum that is safe to swallow. In development.",
     type: "website",
-    url: "https://dissolvagum.com",
     images: [
       {
         url: "https://dissolvagum.com/og-image.png",
@@ -22,11 +21,14 @@ export const metadata: Metadata = {
         alt: "DissolvaGum",
       },
     ],
-    siteName: "DissolvaGum"
+    siteName: "DissolvaGum",
+    locale: "en_US",
   },
   twitter: undefined,
+  metadataBase: new URL("https://dissolvagum.com"),
+  applicationName: "DissolvaGum",
   alternates: {
-    canonical: "https://dissolvagum.com",
+    canonical: "https://dissolvagum.com/",
   },
   robots: {
     index: true,
@@ -66,12 +68,6 @@ export default function RootLayout({
         <meta name="revisit-after" content="7 days" />
         <meta name="distribution" content="global" />
         <meta name="rating" content="general" />
-        <meta property="og:locale" content="en_US" />
-        <meta property="og:type" content="website" />
-        <meta property="og:site_name" content="DissolvaGum" />
-        <meta property="og:url" content="https://dissolvagum.com" />
-        <meta property="og:image" content="/og-image.png" />
-        <meta property="og:image:alt" content="DissolvaGum Logo" />
         <meta name="subject" content="A gum designed to be safe to swallow, in development" />
         <meta name="language" content="English" />
         <meta name="coverage" content="Worldwide" />
@@ -81,13 +77,21 @@ export default function RootLayout({
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify([
           {
             "@context": "https://schema.org",
+            "@type": "WebSite",
+            "name": "DissolvaGum",
+            "alternateName": ["Dissolva Gum", "Dissolvagum", "Dissolva-Gum"],
+            "url": "https://dissolvagum.com/"
+          },
+          {
+            "@context": "https://schema.org",
             "@type": "Organization",
+            "alternateName": ["Dissolva Gum", "Dissolvagum"],
             "name": "DissolvaGum",
             "url": "https://dissolvagum.com",
             "logo": "https://dissolvagum.com/og-image.png",
             "description": "A startup founded by four high school students in Folsom, California, designing a chewing gum that is safe to swallow.",
             "sameAs": [
-              "https://instagram.com/DissolvaGum"
+              "https://www.instagram.com/dissolvagum/"
             ],
             "address": {
               "@type": "PostalAddress",
